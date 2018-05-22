@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'events.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
