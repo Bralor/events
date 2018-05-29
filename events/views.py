@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 # ORIGINAL MESSAGE -> Create your views here.
 
@@ -22,14 +23,15 @@ def event_listing(request):
 
 
 def index(request):
-	html = '''
+    return render(request, 'index.html')
+	#html = '''
 
-	<h1> Hey Client, my app si actually running! </h1>
-	<p> Check out our <a href="/events">offerings </a>
+	#<h1> Hey Client, my app si actually running! </h1>
+	#<p> Check out our <a href="/events">offerings </a>
 
-	'''
-	return HttpResponse(html)
-
+	#'''
+	#return HttpResponse(html)
+    
 
 def event_detail(request, name):
     data = {
