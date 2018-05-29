@@ -1,6 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+# cool shit which dont work
+# aie sem kunda
+# pica
+
+
 # ORIGINAL MESSAGE -> Create your views here.
 
 # def index(request):
