@@ -14,9 +14,8 @@ class Event(models.Model):
 
 
 class EventRun(models.Model):
-    '''Little upgrade for our first method'''
-    event           = models.ForeignKey(Event,on_delete = models.CASCADE)
-    happens         = models.DateTimeField(blank = False, null = False)
-    seats_available = models.PositiveIntegerField(blank = False, null = False)
-    price           = models.DecimalField(max_digits = 10, decimal_places = 2, blank = False, null = False)
-
+	'''Little upgrade for our first method'''
+	event = models.ForeignKey(Event,on_delete=models.CASCADE)
+	happens = models.DateTimeField(blank=False, null=False)
+	seats_available = models.PositiveIntegerField(blank=False, null=False)
+	price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
