@@ -23,7 +23,7 @@ def event_listing(request):
 
 
 def index(request):
-    return render(request, 'templates/events/index.html')
+    return render(request, 'events/index.html')
 	#html = '''
 
 	#<h1> Hey Client, my app si actually running! </h1>
