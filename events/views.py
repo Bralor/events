@@ -1,11 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-# cool shit which dont work
-# aie sem kunda
-# pica
-
-
 # ORIGINAL MESSAGE -> Create your views here.
 
 # def index(request):
@@ -28,7 +23,7 @@ def event_listing(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'templates/events/index.html')
 	#html = '''
 
 	#<h1> Hey Client, my app si actually running! </h1>
