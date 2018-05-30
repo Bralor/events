@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Events run </title>
+</head>
+<body>
+    <ul>
+    {% for run in runs %}
+    <li> 
+    	<p> EVENT: {{ run.event }} </br> HAPPENS: {{ run.happens}} </br> AVAILABLE_SEATS: {{ run.seats_available }} </br> PRICE: {{ run.price }}</p>
+	</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
