@@ -1,17 +1,80 @@
-{% extends 'base.html' %}
-
+<!DOCTYPE html>
+<html>
 {% block title %}
-<title> Event Listing </title>
+<head>
+<style>
+	h2 {
+		background-color: SlateBlue;
+	    color: white;
+	    padding: 15px;
+	    text-align: center;
+	    font-family: arial
+		}
+	ul {
+	    list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    background-color: SlateBlue;
+		}
+	li {
+	    float: left;
+		}
+	li a {
+	    display: block;
+	    color: white;
+	    text-align: center;
+	    padding: 16px;
+	    text-decoration: none;
+		}
+	li b {
+		font-family: verdana;
+		}
+	li a:hover {
+	    background-color: Gray;
+				}
+	table, th, td {
+    	border: 1px solid black;
+    	border-spacing: 3px;
+					}
+	th {
+		text-align: left;
+		}
+</style>
+<title> Main page </title>
 {% endblock title %}
+</head>
 
 {% block content %}
-    <ul>
-    {% for event in events %}
-    <li> <p> NAME: {{ event.name }} </br> LOCATION: {{ event.location}} </br> DESCRIPTION: {{ event.description }} </p></li>
-    {% endfor %}
-    </ul>
+<body>
+	<h2> List of events </h2>
+
+	<ul>
+	  <li><a href="http://127.0.0.1:8000/">Home</a></li>
+	  <li><a href="/events">Events</a></li>
+	  <li><a href="/runs">Runs</a></li>
+	  <li><a href="/about">About</a></li>
+	</ul>
+	<p># Table with events and their descriptions</p>
+	<table style="width:100%">
+	<tr>
+		<th> Name of the event </th>
+		<th> Description </th>
+	</tr>
+	{% for event in events %}
+	<tr>
+	    <td>{{event.name }}</th>
+		<td>{{event.description}}</th>
+	</tr>
+	{% endfor %}
+	</table>
 {% endblock content %}
 
 {% block text %}
-<p> Let's go <a href=>back</a></p>
+<p></p>
+<button><a href="event01">Skiing</a></button>
+<button><a href="event02">Surfing</a></button>
+<button><a href="event03">Hiking</a></button>
 {% endblock text %}
+</body>
+</html>

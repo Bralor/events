@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+
+	{% block title %}
+	<head>
+	<style>
+	body {background-color: powderblue;}
+	h1 {
+		color: blue;
+		font-family: verdana;
+		}
+	p {}
+    li {
+    	color: white;
+		border: 1px solid red;
+    	padding: 30px;
+    	text-align: center;
+    	font-size: 24px;
+    	font-family: verdana;
+    	}
+	</style>
+
+	<title> Main page </title>
+	{% endblock title %}
+	</head>
+
+	{% block content %}
+	<body>
+	<h1 style='verdana'> List of events </h1>
+
+	    
+	    {% for event in events %}
+	    <ul style="list-style-type:square">
+	    	<li>{{ event.name }}</li>
+	    </ul>
+	    {% endfor %}
+
+	    <p>Here are details: <a href='/event01'>Skiing</a>, <a href='/event02'>Surfing</a>, <a href='/event03'>Hiking</a>.</p>
+	    
+	{% endblock content %}
+
+	{% block text %}
+	<p> Let's go <a href='http://127.0.0.1:8000/'>back</a></p>
+	<button><a href='http://127.0.0.1:8000/'>BACK</a></button>
+	{% endblock text %}
+
+	</body>
+</html>

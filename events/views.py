@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Event
-from .models import EventRun
+from .models import Event, EventRun
 
 # ORIGINAL MESSAGE -> Create your views here.
 
@@ -18,9 +17,30 @@ def event_listing(request):
     events = Event.objects.all()
     return render(request, 'event_listing.html', {'events': events})
 
+
 def event_runs(request):
+    '''Here are some details like a date of the event'''
     runs = EventRun.objects.all()
     return render(request, 'event_runs.html', {'runs': runs})
+
+
+def event01(request):
+    '''Ahahaha'''
+    events = Event.objects.all()
+    runs = EventRun.objects.all()
+    return render(request, 'event01.html', {'events': events})
+
+
+def event02(request):
+    return HttpResponse('Its actually running')
+
+
+def event03(request):
+    return HttpResponse('Its actually also running')
+
+
+def about(request):
+    return HttpResponse('Missing in action')
 
 
 # def event_detail(request, name):
