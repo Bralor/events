@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import authenticate, login
 from .forms import RegisterForm
 
 def profile(request):
@@ -12,26 +12,28 @@ def register(request):
 
 		# Validate the data in the form
 		if form.is_valit():
+			user = form.save()
+			raw_password = form.cleaned_data.get('password1')
 
 			# Get the validated data from the form
-			username	= form.cleaned_data,get('username')
-			email		= form.cleaned_data.get('email')
-			first_name	= form.cleaned_data.get('first_name')
-			last_name	= form.cleaned_data.get('last_name')
-			password	= form.cleaned_data.get('password1')
+			# username	= form.cleaned_data,get('username')
+			# email		= form.cleaned_data.get('email')
+			# first_name	= form.cleaned_data.get('first_name')
+			# last_name	= form.cleaned_data.get('last_name')
+			# password	= form.cleaned_data.get('password1')
 
 			# Craete and save the user
-			User = get_user_model()
-			u = User(
-				username=username,
-				email=email,
-				first_name=first_name,
-				last_name=last_name
-					)
-			u.set_password(password)
-			u.save()
+			# User = get_user_model()
+			# u = User(
+			# 	username=username,
+			# 	email=email,
+			# 	first_name=first_name,
+			# 	last_name=last_name
+			# 		)
+			# u.set_password(password)
+			# u.save()
 
-			user = authenticate(username=username, password=password)
+			user = authenticate(username=username, password=raw_password)
 			login(request, user)
 			return redirect('profile')
 
