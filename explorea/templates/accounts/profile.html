@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<title>Profile</title>
+{% endblock head %}
+
 {% block content %}
-{{ user }}
+<div>
+	<h1>Profile</h1>
+	<p>Username: {{ user }}</p>
+	<p>First name: {{ user.first_name}}</p>
+	<p>Last name: {{ user.last_name}}</p>
+	<p>Email: {{ user.email }}</p>
+</div>
+<a href='/accounts/logout/'>LOG OUT</a>
 {% endblock content %}

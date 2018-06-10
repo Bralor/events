@@ -2,18 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Event, EventRun
 
-# ORIGINAL MESSAGE -> Create your views here.
-
-# def index(request):
-# 	return HttpResponse("Hey Client, my app is running!")
 
 def index(request):
-    ''' Main menu. There is a link to the offering of events'''
+    ''' Main page, kind of welcome page with usefull text'''
     return render(request, 'index.html')
 
 
 def event_listing(request):
-    ''' Basic offerings'''
+    ''' Basic offerings of events'''
     events = Event.objects.all()
     return render(request, 'event_listing.html', {'events': events})
 
@@ -24,23 +20,23 @@ def event_runs(request):
     return render(request, 'event_runs.html', {'runs': runs})
 
 
-def event01(request):
-    '''Ahahaha'''
-    events = Event.objects.all()
-    runs = EventRun.objects.all()
-    return render(request, 'event01.html', {'events': events})
+# def event01(request):
+#     '''Ahahaha'''
+#     events = Event.objects.all()
+#     runs = EventRun.objects.all()
+#     return render(request, 'event01.html', {'events': events})
 
 
-def event02(request):
-    return HttpResponse('Its actually running')
+# def event02(request):
+#     return HttpResponse('Its actually running')
 
 
-def event03(request):
-    return HttpResponse('Its actually also running')
+# def event03(request):
+#     return HttpResponse('Its actually also running')
 
 
-def about(request):
-    return HttpResponse('Missing in action')
+# def about(request):
+#     return HttpResponse('Missing in action')
 
 
 # def event_detail(request, name):

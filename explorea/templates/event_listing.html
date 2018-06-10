@@ -40,10 +40,12 @@
 		text-align: left;
 		}
 </style>
+
 {% block title %}
-<title> Main page </title>
+<title> List of events </title>
 {% endblock title %}
 </head>
+
 {% block content %}
 <body>
 	<h2> List of events </h2>
@@ -52,7 +54,7 @@
 	  <li><a href="http://127.0.0.1:8000/">Home</a></li>
 	  <li><a href="/events">Events</a></li>
 	  <li><a href="/runs">Runs</a></li>
-	  <li><a href="/about">About</a></li>
+	  <li><a href="http://127.0.0.1:8000/accounts/login/">Login</a></li>
 	</ul>
 	<p># Table with events and their descriptions</p>
 	<table style="width:100%">
@@ -68,11 +70,6 @@
 	{% endfor %}
 	</table>
 {% endblock content %}
-{% block text %}
-<p></p>
-<button><a href="event01">Skiing</a></button>
-<button><a href="event02">Surfing</a></button>
-<button><a href="event03">Hiking</a></button>
-{% endblock text %}
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import RegisterForm
+from .forms import RegisterForm, EditProfileForm
 
 def profile(request):
 	return render(request, 'accounts/profile.html')
@@ -11,33 +11,26 @@ def register(request):
 		form = RegisterForm(request.POST)
 
 		# Validate the data in the form
-		if form.is_valit():
+		if form.is_valid():
 			user = form.save()
 			raw_password = form.cleaned_data.get('password1')
-
-			# Get the validated data from the form
-			# username	= form.cleaned_data,get('username')
-			# email		= form.cleaned_data.get('email')
-			# first_name	= form.cleaned_data.get('first_name')
-			# last_name	= form.cleaned_data.get('last_name')
-			# password	= form.cleaned_data.get('password1')
-
-			# Craete and save the user
-			# User = get_user_model()
-			# u = User(
-			# 	username=username,
-			# 	email=email,
-			# 	first_name=first_name,
-			# 	last_name=last_name
-			# 		)
-			# u.set_password(password)
-			# u.save()
-
-			user = authenticate(username=username, password=raw_password)
+			user = authenticate(username=user.username, password=raw_password)
 			login(request, user)
 			return redirect('profile')
 
 	# if the request method is GET type
 	form = RegisterForm()
 	return render(request, 'accounts/register.html', {'form': form})
+
+def edit_profile(request):
+	if request.method == 'POST':
+		form = EditProfileForm(request.POST, instance=request.user)
+
+		if form.is_valid():
+			user = form.save()
+			request.session['profile_changes'] = request.session.setdefault('profile_changes', 0) + 1
+			return redirect('profile')
+
+	form = EditProfileForm(instance=request.user)
+	return render(request, 'accounts/edit_profile.html', {'form': form})
 
