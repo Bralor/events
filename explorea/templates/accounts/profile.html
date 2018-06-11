@@ -1,16 +1,78 @@
 {% extends 'base.html' %}
 
+<html>
+<head>
 {% block head %}
 <title>Profile</title>
 {% endblock head %}
+</head>
 
+<body>
 {% block content %}
-<div>
-	<h1>Profile</h1>
+<style>
+	p {
+		font-family: arial;
+	}
+	h2 {
+		background-color: DodgerBlue;
+	    color: white;
+	    padding: 15px;
+	    text-align: center;
+	    font-family: arial
+		}
+	ul {
+	    list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    background-color: DodgerBlue;
+	    font-family: arial;
+		}
+	li {
+	    float: left;
+		}
+	li a {
+	    display: block;
+	    color: white;
+	    text-align: center;
+	    padding: 16px;
+	    text-decoration: none;
+		}
+	li b {
+		font-family: arial;
+		}
+	li a:hover {
+	    background-color: Gray;
+				}
+	table, th, td {
+    	border: 1px solid black;
+    	border-spacing: 3px;
+    	border-collapse: collapse;
+    	background-color: LightGray;
+    	margin-left:auto; 
+    	margin-right:auto;
+    	padding: 10px;
+					}
+	th {
+		text-align: left;
+		}
+</style>
+<h2> My profile </h2>
+<ul>
+	<li><a href="http://127.0.0.1:8000/">Home</a></li>
+	<li><a href="/events">Events</a></li>
+	<li><a href="/runs">Runs</a></li>
+	<li><a href="/accounts/profile/edit/">Edit profile</a></li>
+	<li><a href="/accounts/logout/">Log out</a></li>
+</ul>
+
+<div style="background-color:LightGray;color:Gray;padding:10px;font-family: arial;">
 	<p>Username: {{ user }}</p>
 	<p>First name: {{ user.first_name}}</p>
 	<p>Last name: {{ user.last_name}}</p>
 	<p>Email: {{ user.email }}</p>
 </div>
-<a href='/accounts/logout/'>LOG OUT</a>
 {% endblock content %}
+
+</body>
+</html>

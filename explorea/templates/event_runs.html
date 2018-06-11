@@ -1,9 +1,20 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
 <html>
 <head>
+{% block title %}
+<title> Dates of events </title>
+{% endblock title %}
+</head>
+
+<body>
+{% block content %}
 <style>
+	p {
+		font-family: arial;
+	}
 	h2 {
-		background-color: SlateBlue;
+		background-color: DodgerBlue;
 	    color: white;
 	    padding: 15px;
 	    text-align: center;
@@ -14,7 +25,8 @@
 	    margin: 0;
 	    padding: 0;
 	    overflow: hidden;
-	    background-color: SlateBlue;
+	    background-color: DodgerBlue;
+	    font-family: arial;
 		}
 	li {
 	    float: left;
@@ -27,7 +39,7 @@
 	    text-decoration: none;
 		}
 	li b {
-		font-family: verdana;
+		font-family: arial;
 		}
 	li a:hover {
 	    background-color: Gray;
@@ -35,14 +47,16 @@
 	table, th, td {
     	border: 1px solid black;
     	border-spacing: 3px;
+    	border-collapse: collapse;
+    	background-color: LightGray;
+    	margin-left:auto; 
+    	margin-right:auto;
+    	padding: 10px;
 					}
 	th {
 		text-align: left;
 		}
 </style>
-<title> Dates of events </title>
-</head>
-<body>
 	<h2> Dates of events </h2>
 		<ul>
 			<li><a href="http://127.0.0.1:8000/">Home</a></li>
@@ -51,23 +65,65 @@
 	  		<li><a href="http://127.0.0.1:8000/accounts/login/">Login</a></li>
 		</ul>
 
+	<div style="background-color:LightGray;color:Gray;padding:20px;">
 	<p># Table with events and their descriptions</p>
+	</div>
     
     <table style="width:100%">
     <tr>
-		<th> Name of the event </th>
-		<th> Happens </th>
-		<th> Available seats </th>
-		<th> Price </th>
+		<th style="font-family: arial;
+				background-color: DodgerBlue;
+				color: white;
+				font-size: 18px;
+				"> Name of the event </th>
+		
+		<th style="font-family: arial;
+				background-color: DodgerBlue;
+				color: white;
+				font-size: 18px;
+				"> Happens </th>
+		
+		<th style="font-family: arial;
+				background-color: DodgerBlue;
+				color: white;
+				font-size: 18px;
+				"> Available seats </th>
+		
+		<th style="font-family: arial;
+				background-color: DodgerBlue;
+				color: white;
+				font-size: 18px;
+				"> Price </th>
 	</tr>
    	{% for run in runs %}
 	<tr>
-	    <td>{{run.event}}</td>
-		<td>{{run.happens}}</td>
-		<td>{{run.seats_available}}</td>
-		<td>{{run.price}}</td>
+	    <td style="
+	    	font-family: arial;
+	    	color: solid black;
+	    	font-size: 15px;
+	    	">{{run.event}}</td>
+		
+		<td style="
+	    	font-family: arial;
+	    	color: Gray;
+	    	font-size: 15px;
+	    	">{{run.happens}}</td>
+		
+		<td style="
+	    	font-family: arial;
+	    	color: Gray;
+	    	font-size: 15px;
+	    	">{{run.seats_available}}</td>
+		
+		<td style="
+	    	font-family: arial;
+	    	color: Gray;
+	    	font-size: 15px;
+	    	">{{run.price}}</td>
 	</tr>
 	{% endfor %}
 	</table>
- </body>
+{% endblock content %}
+
+</body>
 </html>
