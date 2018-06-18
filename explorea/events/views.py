@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Event, EventRun
+from .forms import EventForm, EventRunForm
 
 
 def index(request):
@@ -15,9 +16,30 @@ def event_listing(request):
 
 
 def event_runs(request):
-    '''Here are some details like a date of the event'''
-    runs = EventRun.objects.all()
-    return render(request, 'event_runs.html', {'runs': runs})
+	'''Here are some details like a date of the event'''
+	event 	= Event.objects.all(pk=pk)
+	runs 	= EventRun.objects.all()
+	return render(request, 'event_runs.html', {'event': event, 'runs': runs})
+
+
+def create_event(request):
+	''' There is choice for the user to make his own event '''
+	if request.method == 'POST':
+		form = EventForm(request.POST)
+		if form.is_valid():
+			event 		= form.save(commit=False)
+			event.host 	= request.user
+			event.save()
+			return redirect('')
+
+	form = EventForm()
+	return render(request, 'create_event.html', {'form' : form})
+
+
+def my_events(request):
+	'''I'm little bit confused about the purpose of this page'''
+	events = Event.objects.filter(host_id=request.user.id)
+	return render(request, 'my_events.html', {'events': events})
 
 
 # def event01(request):

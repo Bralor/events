@@ -63,25 +63,25 @@
 		}
 </style>
 	<h2>Create your own account</h2>
-	
 	<ul>
 		<li><a href="http://127.0.0.1:8000/">Home</a></li>
 		<li><a href="/accounts/register">Create new account</a></li>
 	</ul>
-
 	<div style="text-align: center">
 	<table>
-	<form method='post'>
+	<form method='POST'>
 		{% csrf_token %}
-		<tr>
-			<td>{{ form.as_p }}</td>
-		</tr>
+		{% for field in form.visible_fields %}
+			{% for error in field.errors %}
+			{{ error }}
+			{% endfor %}
+			<p>{{ field.label_tag }}{{ field }}</p>
+		{% endfor %}
 	</table>
-	<button type='submit'>Submit</button>
+	<button type='submit'>Save</button>
 	</form>
 	</div>
 {% endblock content %}
-
 </body>
 </html>
 

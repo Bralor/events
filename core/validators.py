@@ -11,5 +11,5 @@ def validate_human_name(value):
 	# We will use a function of module re, match()
 	if not re.match(regex, value):
 		raise ValidationError(
-			_('Names can contain only alpha characters',
-			code='invalid'))
+				'Names can contain only alpha characters',
+			code='invalid')	

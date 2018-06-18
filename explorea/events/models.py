@@ -1,14 +1,33 @@
 from django.db import models
+from django.conf import settings
 
 
 # first model = class with events
 class Event(models.Model):
 	'''docstring for ClassName'''
-	name        = models.CharField(max_length = 200)
-	description = models.TextField(max_length = 200)
-	location	= models.CharField(max_length = 500)
-	category	= models.CharField(max_length = 20)
+	FUN = 'FN'
+	RELAX = 'RX'
+	EXP = 'EX'
+	SIGHTS = 'SI'
 
+	CATEGORY_CHOICES = (
+		(FUN, 'fun'),
+		(RELAX, 'relax'),
+		(EXP, 'experience'),
+		(SIGHTS, 'sights')
+						)
+
+	host		= models.ForeignKey(settings.AUTH_USER_MODEL,
+		on_delete=models.CASCADE)
+	name 		= models.CharField(max_length=200)
+	description = models.TextField(max_length=1000)
+	location 	= models.CharField(max_length=500)
+
+	category 	= models.CharField(
+		max_length=20,
+		choices = CATEGORY_CHOICES,
+		default = FUN,
+									)
 	def __str__(self):
 		return self.name
 

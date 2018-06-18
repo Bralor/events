@@ -42,11 +42,14 @@ def change_password(request):
 	''' The user wants to change his current password'''
 	if request.method == 'POST':
 		form = PasswordChangeForm(data=request.POST, user=request.user)
+		
 		if form.is_valid():
 			user = form.save()
 			# we need to obtain a new session hash due to new password
 			update_session_auth_hash(request, user)
 			return redirect('accounts/profile/')
+		else:
+			return render(request, 'accounts/change_password.html', {'form': form})
 	
 	# GET method
 	else:
