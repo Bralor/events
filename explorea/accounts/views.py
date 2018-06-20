@@ -2,12 +2,19 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import RegisterForm, EditProfileForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def profile(request):
+	''' This function render only basic information about the user's account '''
+
 	return render(request, 'accounts/profile.html')
 
 
 def register(request):
+	''' The register function. '''
+
 	if request.method == 'POST':
 		# Create thte form and populate it with data from the POST request
 		form = RegisterForm(request.POST)
@@ -25,7 +32,10 @@ def register(request):
 	return render(request, 'accounts/register.html', {'form': form})
 
 
+@login_required
 def edit_profile(request):
+	''' If we want to change some of our information in the profile'''
+
 	if request.method == 'POST':
 		form = EditProfileForm(request.POST, instance=request.user)
 
@@ -38,8 +48,13 @@ def edit_profile(request):
 	return render(request, 'accounts/edit_profile.html', {'form': form})
 
 
+@login_required
 def change_password(request):
 	''' The user wants to change his current password'''
+
+	if not request.user.is_authenticated:
+		return redirect('login')
+
 	if request.method == 'POST':
 		form = PasswordChangeForm(data=request.POST, user=request.user)
 		

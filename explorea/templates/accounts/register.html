@@ -1,87 +1,29 @@
 {% extends 'base.html' %}
-
 <html>
 <head>
 {% block title %}
 <title>Register</title>
 {% endblock title %}
 </head>
-
 <body>
-{% block content %}
-<style>
-	p {
-		font-family: arial;
-	}
-	h2 {
-		background-color: DodgerBlue;
-	    color: white;
-	    padding: 15px;
-	    text-align: center;
-	    font-family: arial
-		}
-	ul {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	    overflow: hidden;
-	    background-color: DodgerBlue;
-	    font-family: arial;
-		}
-	li {
-	    float: left;
-		}
-	li a {
-	    display: block;
-	    color: white;
-	    text-align: center;
-	    padding: 16px;
-	    text-decoration: none;
-		}
-	li b {
-		font-family: arial;
-		}
-	li a:hover {
-	    background-color: Gray;
-				}
-	table, th, td {
-    	border: 1px solid black;
-    	border-spacing: 3px;
-    	border-collapse: collapse;
-    	background-color: LightGray;
-    	margin-left:auto; 
-    	margin-right:auto;
-    	padding: 10px;
-    	width:40%;
-		text-align: left;
-		font-family: arial;
-		color: white;
-		background-color: Gray;
-					}
-	th {
-		text-align: left;
-		}
-</style>
-	<h2>Create your own account</h2>
-	<ul>
-		<li><a href="http://127.0.0.1:8000/">Home</a></li>
-		<li><a href="/accounts/register">Create new account</a></li>
-	</ul>
-	<div style="text-align: center">
-	<table>
-	<form method='POST'>
-		{% csrf_token %}
-		{% for field in form.visible_fields %}
-			{% for error in field.errors %}
-			{{ error }}
-			{% endfor %}
-			<p>{{ field.label_tag }}{{ field }}</p>
-		{% endfor %}
-	</table>
-	<button type='submit'>Save</button>
-	</form>
+	{% block content %}
+	<div class="container" text-align: center">
+		<br>
+		<h2>Create account</h2>
+		<table>
+			<form method='POST'>
+				{% csrf_token %}
+				{% for field in form.visible_fields %}
+					{% for error in field.errors %}
+					{{ error }}
+					{% endfor %}
+					<p>{{ field.label_tag }}{{ field }}</p>
+				{% endfor %}
+			</form>
+		</table>
+		<button type="submit" class="btn btn-outline-danger">Submit</button>
 	</div>
-{% endblock content %}
+	{% endblock content %}
 </body>
 </html>
 

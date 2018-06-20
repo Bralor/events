@@ -1,25 +1,49 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
-	{% block title %}
-	<title>Title of document</title>
-	<link rel='stylesheet' href='{% static "templates/style.css" %}'
-	{% endblock title %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  {% block title %}
+  <title>Base</title>
+  {% endblock title %}
 </head>
-
 <body>
-	{% block content %}
-	<h1> EVENTS </h1>
-	
-	<div>
-		{% if user.is_authenticated %}
-		<a href='/accounts/logout/'>LOG OUT</a>
-		{% else %}
-		<a href='/accounts/login/'>LOG IN</a>
-		{% endif %}
-	</div>
-	{% endblock content %}
-
+    <br>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="http://127.0.0.1:8000/">Home</a>
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="/events">Events<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/runs">Runs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/logout">Logout<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/profile/">Profile<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/profile/edit/">Edit profile<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/change-password/">Change password<span class="sr-only">(current)</span></a>
+              </li>
+            </ul>
+              {% else %}
+            <ul class="nav navbar-nav navbar-right">
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/login">Login<span class="sr-only">(current)</span></a>
+              </li>
+              <li><a class="nav-link" href="/accounts/register">Register</a></li>
+            </ul>
+          {% endif %}
+        </nav>
+      </div>
+    {% block content %}
+    
+    {% endblock content %}
 </body>
 </html>

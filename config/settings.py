@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'explorea.accounts'
 ]
 
+# all of there are trying to refer to builtin middlware classes
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # I've added a new simple middleware
+    'config.middleware.LoginRequiredMiddleware'     
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -125,3 +128,6 @@ STATIC_URL = '/static/'
 # "dumb" smtp server that receives email locally
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
+
+# we set variable to the login URL
+LOGIN_URL = '/accounts/login/'

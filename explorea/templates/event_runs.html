@@ -1,129 +1,23 @@
 {% extends 'base.html' %}
-
 <html>
 <head>
-{% block title %}
-<title> Dates of events </title>
-{% endblock title %}
+	{% block title %}
+	<title> Dates of events </title>
+	{% endblock title %}
 </head>
-
 <body>
-{% block content %}
-<style>
-	p {
-		font-family: arial;
-	}
-	h2 {
-		background-color: DodgerBlue;
-	    color: white;
-	    padding: 15px;
-	    text-align: center;
-	    font-family: arial
-		}
-	ul {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	    overflow: hidden;
-	    background-color: DodgerBlue;
-	    font-family: arial;
-		}
-	li {
-	    float: left;
-		}
-	li a {
-	    display: block;
-	    color: white;
-	    text-align: center;
-	    padding: 16px;
-	    text-decoration: none;
-		}
-	li b {
-		font-family: arial;
-		}
-	li a:hover {
-	    background-color: Gray;
-				}
-	table, th, td {
-    	border: 1px solid black;
-    	border-spacing: 3px;
-    	border-collapse: collapse;
-    	background-color: LightGray;
-    	margin-left:auto; 
-    	margin-right:auto;
-    	padding: 10px;
-					}
-	th {
-		text-align: left;
-		}
-</style>
-	<h2> Dates of events </h2>
-		<ul>
-			<li><a href="http://127.0.0.1:8000/">Home</a></li>
-	  		<li><a href="/events">Events</a></li>
-	  		<li><a href="/runs">Runs</a></li>
-	  		<li><a href="http://127.0.0.1:8000/accounts/login/">Login</a></li>
-		</ul>
-
-	<div style="background-color:LightGray;color:Gray;padding:20px;">
-	<p># Table with events and their descriptions</p>
-	</div>
-    
-    <table style="width:100%">
-    <tr>
-		<th style="font-family: arial;
-				background-color: DodgerBlue;
-				color: white;
-				font-size: 18px;
-				"> Name of the event </th>
-		
-		<th style="font-family: arial;
-				background-color: DodgerBlue;
-				color: white;
-				font-size: 18px;
-				"> Happens </th>
-		
-		<th style="font-family: arial;
-				background-color: DodgerBlue;
-				color: white;
-				font-size: 18px;
-				"> Available seats </th>
-		
-		<th style="font-family: arial;
-				background-color: DodgerBlue;
-				color: white;
-				font-size: 18px;
-				"> Price </th>
-	</tr>
-   	{% for run in runs %}
-	<tr>
-	    <td style="
-	    	font-family: arial;
-	    	color: solid black;
-	    	font-size: 15px;
-	    	">{{run.event}}</td>
-		
-		<td style="
-	    	font-family: arial;
-	    	color: Gray;
-	    	font-size: 15px;
-	    	">{{run.happens}}</td>
-		
-		<td style="
-	    	font-family: arial;
-	    	color: Gray;
-	    	font-size: 15px;
-	    	">{{run.seats_available}}</td>
-		
-		<td style="
-	    	font-family: arial;
-	    	color: Gray;
-	    	font-size: 15px;
-	    	">{{run.price}}</td>
-	</tr>
-	{% endfor %}
-	</table>
-{% endblock content %}
-
+	{% block content %}
+	<div class="container">
+		<br>
+		<h2> {{ event.name }}</h2>
+		<table>
+			<tr>
+				<th>{{ event.host }}</th><th>{{ event.location }}</th><th>{{ event.category }}</th>
+			</tr>
+		</table>
+		<p>{{ event.description }}</p>
+		<br>
+		<a href='/events/'> Back</a> | <a href='/events/{{ event.id }}/newRun/'>Add new Run</a>
+	{% endblock content %}
 </body>
 </html>

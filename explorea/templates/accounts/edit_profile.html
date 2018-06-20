@@ -1,95 +1,26 @@
 {% extends 'base.html' %}
-
 <html>
 <head>
-{% block title %}
-<title>Edit Profile</title>
-{% endblock title %}
+	{% block title %}
+	<title>Edit Profile</title>
+	{% endblock title %}
 </head>
-
 <body>
-{% block content %}
-<style>
-	p {
-		font-family: arial;
-	}
-	h2 {
-		background-color: DodgerBlue;
-	    color: white;
-	    padding: 15px;
-	    text-align: center;
-	    font-family: arial
-		}
-	ul {
-	    list-style-type: none;
-	    margin: 0;
-	    padding: 0;
-	    overflow: hidden;
-	    background-color: DodgerBlue;
-	    font-family: arial;
-		}
-	li {
-	    float: left;
-		}
-	li a {
-	    display: block;
-	    color: white;
-	    text-align: center;
-	    padding: 16px;
-	    text-decoration: none;
-		}
-	li b {
-		font-family: arial;
-		}
-	li a:hover {
-	    background-color: Gray;
-				}
-	table, th, td {
-    	border: 1px solid black;
-    	border-spacing: 3px;
-    	border-collapse: collapse;
-    	background-color: LightGray;
-    	margin-left:auto; 
-    	margin-right:auto;
-    	padding: 10px;
-    	font-family: arial;
-    	text-align: left;
-					}
-	th {
-		text-align: left;
-		}
-</style>
-	<h2>Edit your profile</h2>
-
-	<ul>
-		<li><a href="http://127.0.0.1:8000/">Home</a></li>
-	  	<li><a href="/events">Events</a></li>
-	  	<li><a href="/runs">Runs</a></li>
-	  	<li><a href="/accounts/register">Create new account</a></li>
-	</ul>
-
-  	<div style="text-align: center">
-	<table>
-  	<form method="post">
-		{% csrf_token %}
-		<tr>
-			<td>{{ form.username.label }}: {{ form.username }}</td>
-		</tr>
-		<tr>
-			<td>{{ form.email.label }}: {{ form.email }}</td>
-		</tr>
-		<tr>
-			<td>{{ form.first_name.label }}: {{ form.first_name }}</td>
-		</tr>
-		<tr>
-			<td>{{ form.last_name.label }}: {{ form.last_name }}</td>
-		</tr>  
-	</table>
-	<button type="submit">Save</button>
-	</form>
+	{% block content %}
+	<div class="container">
+		<h2>Edit profile</h2>
+		<table>
+			<form method="post">
+				{% csrf_token %}
+					<tr><td>{{ form.username.label }}: {{ form.username }}</td></tr>
+					<tr><td>{{ form.email.label }}: {{ form.email }}</td></tr>
+					<tr><td>{{ form.first_name.label }}: {{ form.first_name }}</td></tr>
+					<tr><td>{{ form.last_name.label }}: {{ form.last_name }}</td></tr> 
+			</form>
+		</table>
+		<br>
+		<button type="submit" class="btn btn-outline-danger">Save</button>
 	</div>
-
-{% endblock content %}
-
+	{% endblock content %}
 </body>
 </html>
