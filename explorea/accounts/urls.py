@@ -28,12 +28,5 @@ urlpatterns = 	[
 	url(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm,
 		{'post_reset_redirect': 'password_reset_complete'}, name='password_reset_confirm'),
 	path('reset_password/complete', password_reset_complete, name='password_reset_complete'),
-
-
-
-		# auth_views.reset_password, 
-		# {'template_name': 'accounts/reset_password.html',
-		#  'post_reset_redirect': 'password_reset_done'},
-		#   name='reset_password'
-		#   )
-		 		]
+				
+				]

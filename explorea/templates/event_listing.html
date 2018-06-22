@@ -13,32 +13,42 @@
 		<table style="width:100%;">
 			<tr>
 				<th style="
-				background-color: DodgerBlue;
-				color: white;
-				font-size: 15px;
-				"> Name of the event </th>
-				
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">Name of the event
+				</th>
 				<th style="
-				background-color: DodgerBlue;
-				color: white;
-				font-size: 15px;
-				"> Description </th>
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">Description
+				</th>
+				<th style="
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">Update
+				</th>
 			</tr>
 			{% for event in events %}
 			<tr>
-			    <td style="
-			    	color: solid black;
-			    	font-size: 15px;
-			    	">{{event.name }}</th>
-				
-				<td  style="
-			    	font-family: arial;
-			    	color: Gray;
-			    	font-size: 15px;
-			    	">{{event.description}}</th>
+				<td style="
+					color: solid black;
+					font-size: 15px;
+					"><a class="btn btn-outline-primary" data-toggle="collapse" href="/events/detail/{{ event.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">{{ event.name }}</a>
+				</td>
+				<td style="
+				    color: Gray;
+					font-size: 15px;
+					">{{ event.description }}
+				</td>
+				<td><a href="/events/update/{{ event.id }}" class="btn btn-outline-primary" role="button" aria-pressed="true">Update</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</table>
+	</div>
 	{% endblock content %}
 </body>
 </html>
