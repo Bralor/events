@@ -1,24 +1,57 @@
 {% extends 'base.html' %}
+<html>
+<head>
+	{% block title %}
+	<title>My events</title>
+	{% endblock title %}
+</head>
+<body>
+	{% block content %}
+	<div class="container">
+		<br>
+		<h2>My events</h2>
+		<a class="btn btn-outline-primary" data-toggle="collapse" href="events/new/" role="button" aria-expanded="false" aria-controls="collapseExample">Add your Event</a><br>
+		<br>
+		<table style='text-align: left;'>
+			<tr>
+				<th style="
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">Name
+				</th>
+				<th style="
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">Location
+				</th>
+				<!-- Jenom abych srovnal hlavicku s nasledujicimi radky -->
+				<th style="
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">
+				</th>
+				<th style="
+					background-color: DodgerBlue;
+					color: white;
+					font-size: 15px;
+					">
+				</th>
+			</tr>
+			{% for event in events %}
+			<tr>
+				<td><a class="btn btn-outline-primary" data-toggle="collapse" href="/events/detail/{{ event.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">{{ event.name }}</a></td>
+				<td>{{ event.location }}</td>
+				<td><a href="/events/update/{{ event.id }}" class="btn btn-outline-primary" role="button" aria-pressed="true">Update</a></td>
+				<td><a href="events/detail/{{ event.id }}" class="btn btn-outline-danger" role="button" aria-pressed="true">Delete</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	{% endblock content %}
+</body>
+</html>
 
-{% block title %}
-<title> My events </title>
-{% endblock title %}
-
-{% block content %}
-<h2> My events </h2>
-<a href='events/new/'> ADD YOUR EVENT </a>
-<table style='text-align: center;'>
-	<tr>
-		<th> NAME </th><th> LOCATION </th>
-	</tr>
-	{% for event in events %}
-	<tr>
-		<td><a href='events/detail/{{ event.id }}'> {{ event.name }}</a></td>
-		<td>{{ event.location }}</td>
-		<td><a href='events/update/{{ event.id }}'> UPDATE </a></td>
-		<td><a href='events/detail/{{ event.id }}'> DELETE </a></td>
-	</tr>
-	{% endfor %}
-</table>
-{% endblock content %}
 

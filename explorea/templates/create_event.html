@@ -7,11 +7,14 @@
 </head>
 <body>
 {% block content %}
-	<form method='POST'>
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type='Submit' value='Save'>
-	</form>
+	<div class="container">
+		<br>
+		<form method='POST'>
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type='Submit' value='Save' class="btn btn-outline-danger" role="button" aria-pressed="true">
+		</form>
+	</div>
 {% endblock content %}
 </body>
 </html>
