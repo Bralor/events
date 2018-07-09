@@ -26,7 +26,6 @@ header {
 	}
 /*###############################################################################*/
 .header-section {
-
 	line-height: 3rem;
 	}
 .nav-button {
@@ -102,8 +101,7 @@ header {
 footer {
     background-color: rgba(250,250,250);
     height: 200px;
-
-    display: flex;
+	display: flex;
     justify-content: center;
 	}
 footer section {
