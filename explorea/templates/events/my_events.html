@@ -10,7 +10,7 @@
 	<div class="container">
 		<br>
 		<h2>My events</h2>
-		<a class="btn btn-outline-primary" data-toggle="collapse" href="events/new/" role="button" aria-expanded="false" aria-controls="collapseExample">Add your Event</a><br>
+		<a class="btn btn-outline-primary" data-toggle="collapse" href="/events/new/" role="button" aria-expanded="false" aria-controls="collapseExample">Add your Event</a><br>
 		<br>
 		<table style='text-align: left;'>
 			<tr>
@@ -45,7 +45,7 @@
 				<td><a class="btn btn-outline-primary" data-toggle="collapse" href="/events/detail/{{ event.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">{{ event.name }}</a></td>
 				<td>{{ event.location }}</td>
 				<td><a href="/events/update/{{ event.id }}" class="btn btn-outline-primary" role="button" aria-pressed="true">Update</a></td>
-				<td><a href="events/detail/{{ event.id }}" class="btn btn-outline-danger" role="button" aria-pressed="true">Delete</a></td>
+				<td><a href="/events/delete/{{ event.id }}" class="btn btn-outline-danger" role="button" aria-pressed="true">Delete</a></td>
 			</tr>
 			{% endfor %}
 		</table>

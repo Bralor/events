@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     ''' Main page, kind of welcome page with usefull text'''
 
-    return render(request, 'index.html')
+    return render(request, 'events/index.html')
 
 
 @login_required
@@ -16,7 +16,7 @@ def event_listing(request):
     ''' Basic offerings of events'''
 
     events = Event.objects.all()
-    return render(request, 'event_listing.html', {'events': events})
+    return render(request, 'events/event_listing.html', {'events': events})
 
 
 @login_required
@@ -25,7 +25,7 @@ def event_detail(request, pk):
 
 	event 	= Event.objects.get(pk=pk)
 	runs 	= event.eventrun_set.all().order_by('date', 'time')
-	return render(request, 'event_detail.html', {'event': event, 'runs': runs})
+	return render(request, 'events/event_detail.html', {'event': event, 'runs': runs})
 
 
 @login_required
@@ -38,10 +38,10 @@ def create_event(request):
 			event 		= form.save(commit=False)
 			event.host 	= request.user
 			event.save()
-			return redirect('')
+			return redirect('my_events')
 
 	form = EventForm()
-	return render(request, 'create_event.html', {'form' : form})
+	return render(request, 'events/create_event.html', {'form' : form})
 
 
 @login_required
@@ -49,7 +49,7 @@ def my_events(request):
 	'''I'm little bit confused about the purpose of this page'''
 
 	events = Event.objects.filter(host_id=request.user.id)
-	return render(request, 'my_events.html', {'events': events})
+	return render(request, 'events/my_events.html', {'events': events})
 
 
 @login_required
@@ -82,7 +82,7 @@ def update_event(request, pk):
 			return redirect('my_events')
 
 	form = EventForm(instance=event)
-	return render(request, 'create_event.html', {'form': form})
+	return render(request, 'events/create_event.html', {'form': form})
 
 
 @login_required
