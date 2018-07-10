@@ -6,17 +6,24 @@
 {% endblock title %}
 </head>
 <body>
-{% block content %}
-<div class="container">
-	<br>
-	<h2> Login </h2>
-		<form method='post'>
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit" class="btn btn-outline-danger">Login</button>
-		</form>
-</div>
-{% endblock %}
+	{% block content %}	
+	<div class="Container">
+		<div class="LogPicture">
+
+		</div>
+		<div class="LogWindow">
+			<form method='post'>
+				<h2>Login</h2>
+				{% csrf_token %}
+				<p>{{ form.as_p }}</p>
+
+				<button type="submit">Login</button>
+				<a class="ForgottingPassword" href="{% url 'accounts:reset_password' %}">I can't remember</a>
+				
+			</form>
+		</div>
+	</div>
+	{% endblock %}
 </body>
 </html>
 
