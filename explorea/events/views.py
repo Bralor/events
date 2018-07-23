@@ -12,10 +12,10 @@ def index(request):
 
 
 @login_required
-def event_listing(request):
+def event_listing(request, category=None):
     ''' Basic offerings of events'''
 
-    events = Event.objects.all()
+    events = Event.objects.filter_by_category(category)
     return render(request, 'events/event_listing.html', {'events': events})
 
 

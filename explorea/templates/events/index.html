@@ -9,11 +9,11 @@
 <body>
 	{% block content %}
 	<div class="main-banner">
-		<p class="claim">Welcome aboard!</p>
-		<a href="#">Fun</a>
-		<a href="#">Experience</a>
-		<a href="#">Sights</a>
-		<a href="#">Relax</a>
+	    <p class="claim">Welcome aboard!</p>
+	    <a href="{% url 'events:events_by_category' 'fun' %}">Fun</a>
+	    <a href="{% url 'events:events_by_category' 'experience' %}">Experience</a>
+	    <a href="{% url 'events:events_by_category' 'sights' %}">Sights</a>
+	    <a href="{% url 'events:events_by_category' 'relax' %}">Relax</a>
 	</div>
 	{% endblock content %}
 </body>

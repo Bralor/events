@@ -3,6 +3,20 @@ from django.conf import settings
 
 
 # first model = class with events
+class EventManager(models.Manager):
+	'''This is a custom model that inherits all methods from models.Manager'''
+
+	def filter_by_category(self, category):
+		DbEquivalent = ''
+		for shortcut in self.model.CATEGORY_CHOICES:
+			if shortcut[1] == category:
+				DbEquivalent = shortcut[0]
+				break
+		else:
+			return self.all()
+		return self.filter_by_category(category=DbEquivalent)
+
+
 class Event(models.Model):
 	'''docstring for ClassName'''
 	FUN = 'FN'
@@ -28,6 +42,8 @@ class Event(models.Model):
 		choices = CATEGORY_CHOICES,
 		default = FUN,
 									)
+	objects = EventManager()
+
 	def __str__(self):
 		return self.name
 
@@ -44,3 +60,6 @@ class EventRun(models.Model):
 
 	def __str__(self):
 		return self.event.name
+
+
+

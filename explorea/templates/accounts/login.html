@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+<!DOCTYPE html>
 <html>
 <head>
 {% block title %}
@@ -9,21 +10,18 @@
 	{% block content %}	
 	<div class="Container">
 		<div class="LogPicture">
-
 		</div>
 		<div class="LogWindow">
-			<form method='post'>
+			<form method='Post'>
 				<h2>Login</h2>
 				{% csrf_token %}
 				<p>{{ form.as_p }}</p>
-
 				<button type="submit">Login</button>
-				<a class="ForgottingPassword" href="{% url 'accounts:reset_password' %}">I can't remember</a>
-				
+				<a class="ForgottingPassword" href="{% url 'accounts:reset_password' %}">Forget password?</a>
 			</form>
 		</div>
 	</div>
-	{% endblock %}
+	{% endblock content %}
 </body>
 </html>
 

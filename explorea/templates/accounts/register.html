@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+<!DOCTYPE html>
 <html>
 <head>
 {% block title %}
@@ -7,11 +8,12 @@
 </head>
 <body>
 	{% block content %}
-	<div class="container" text-align: center">
-		<br>
-		<h2>Create account</h2>
-		<table>
-			<form method='POST'>
+	<div class="Container">
+		<div class="LogPicture">
+		</div>
+		<div class="RegWindow">
+			<form method='Post'>
+				<h2>Create account</h2>
 				{% csrf_token %}
 				{% for field in form.visible_fields %}
 					{% for error in field.errors %}
@@ -19,11 +21,11 @@
 					{% endfor %}
 					<p>{{ field.label_tag }}{{ field }}</p>
 				{% endfor %}
+				<button type="submit">Submit</button>
 			</form>
-		</table>
-		<button type="submit" class="btn btn-outline-danger">Submit</button>
+		</div>
 	</div>
-	{% endblock content %}
+	{% endblock content%}
 </body>
 </html>
 
