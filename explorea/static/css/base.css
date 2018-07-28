@@ -83,9 +83,12 @@ header {
 	color: white;
 	border-radius: 1em;
 	}
+.main-banner a:hover {
+    background-color:#a58006;
+    }
 .main-banner a:nth-of-type(1) {
     grid-area: 3 / 2 / 4 / 3;
-}
+    }
 .main-banner a:nth-of-type(2) {
     grid-area: 3 / 3 / 4 / 4;
     }
@@ -97,8 +100,8 @@ header {
     }
 .claim {
 	position: absolute;
-    top: 35%;
-    left: 25%;
+    top: 25%;
+    left: 30%;
     font-size: 80px;
     grid-area: 2 / 2 / 3 / 6;
 	}
@@ -161,7 +164,90 @@ header {
     font-weight:700;
     color:green;
     }
-
+/*###############################################################################*/
+.LowerContainer {
+    padding: 0 100px;
+    margin: 3em auto;
+    }
+.LowerTable {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(auto-fill, 400px);
+    grid-gap: 30px;
+    margin:auto;
+    }
+.EventTable {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    white-space: nowrap;
+    min-width: 200px;
+    }
+.EventDetails {
+    padding: 1em; 
+    }
+.EventDetails p:nth-of-type(1) {
+    font-style: italic;
+    }
+.EventDetails p:nth-of-type(2) {
+    font-weight: 600;
+    font-size: 1.2em;
+    }
+.NotAvailable {
+    width: 100%;
+    height: 50%;
+    margin:auto;
+    background-image: url('/static/img/camera.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    border: solid #03BA87 2px;
+}
+/*###############################################################################*/
+.FilterBanner {
+    background-position: top;
+    background-repeat: no-repeat;
+    background-image: url('/static/img/adv.jpg');
+    height: 640px;
+    color: white;
+    }
+.EventFilters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    }
+.FormFilter {
+    margin:5px 15px;
+    font-weight: bold;
+    color:#929b98;
+    }
+.FilterButtonGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:0px 20px;
+    border: 20px;
+    padding: 10px;
+    }
+.FilterButton {
+    margin: 0 20px;
+    padding: 15px 40px;
+    font-size: 20px;
+    background-color: #03BA87;
+    color: white;
+    border-radius: .7em;
+    }
+.FilterButton:hover {
+    background-color: #edc647;
+    }
+select {
+    margin:10px 5px;
+    padding: 0.5em 1.5px;
+    border: 1px solid #ccc;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #e5fcf5 url("img/icon-select.png") no-repeat 90% 50%;
+    }
 /*###############################################################################*/
 footer {
     background-color: rgba(250,250,250);

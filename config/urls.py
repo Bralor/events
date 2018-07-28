@@ -3,9 +3,8 @@ from django.urls import path, include
 from explorea.events import views
 
 urlpatterns = 	[
-	path('admin/', admin.site.urls),
 	path('', views.index, name='index'),
-    path('events/', include('explorea.events.urls', namespace='events')),
+	path('events/', include('explorea.events.urls', namespace='events')),
     path('accounts/', include('explorea.accounts.urls', namespace='accounts')),
-    
+    path('admin/', admin.site.urls),
 				]

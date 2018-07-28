@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load EventTags %}}
 <html>
 <head>
 	{% block title %}
@@ -7,29 +8,58 @@
 </head>
 <body>
 	{% block content %}
-	<div class="event-category-filters">
-		<a class="button-gold" href="{% url 'events:events_by_category' 'fun' %}">Fun</a>
-	    <a class="button-gold" href="{% url 'events:events_by_category' 'experience' %}">Experience</a>
-	    <a class="button-gold" href="{% url 'events:events_by_category' 'sights' %}">Sights</a>
-	    <a class="button-gold" href="{% url 'events:events_by_category' 'relax' %}">Relax</a>
+	<div class="FilterBanner">
+		<h1>Let's take a look around</h1>		
 	</div>
-	<div class="container">
-		<br>
-		<h2> List of events </h2>
-		<table style="width:100%;
-				text-align: center;">
-			<tr>
-				<th>Name</th><th>Location</th>
-			</tr>
+
+	<form class="EventFilters"  method="GET">
+		{% for hidden_field in form.hidden_fields %}
+			{{ hidden_field }}
+		{% endfor %}
+
+    	{% for field in FilterForm.visible_fields %}
+    		<div class="FormFilter">
+    			{{ field.label_tag }} {{ field }}
+    				<div class="errors">
+	        	    	{% for error in field.errors %}
+	            		<div class="error">
+	            			{{ error }}
+	            		</div>
+	                	{% endfor %}
+	            	</div>
+	            </i>
+        	</div>
+        {% endfor %}
+    	<button type="submit">Filter</button>
+	</form>
+	
+	<div class="FilterButtonGroup">
+		<a class="FilterButton" href="{% url 'events:events_by_category' 'fun' %}">Fun</a>
+	    <a class="FilterButton" href="{% url 'events:events_by_category' 'experience' %}">Experience</a>
+	    <a class="FilterButton" href="{% url 'events:events_by_category' 'sights' %}">Sights</a>
+	    <a class="FilterButton" href="{% url 'events:events_by_category' 'relax' %}">Relax</a>
+	</div>
+
+	<div class="LowerContainer">
+		{% if events %}
+		<div class="LowerTable">
 			{% for event in events %}
-			<tr>
-				<td><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></td>
-				<td> {{ event.location}}</td>
-	            <td><a href="{% url 'events:update_event' event.id %}">Update</a></td>
-	        </tr>
+			<a class="EventTable" href="{% url 'events:event_detail' event.id %}">
+				<div class="NotAvailable"></div>
+				<div class="EventDetails">
+					<p>{{ event.host }}</p>
+					<p>{{ event.name }}</p>
+					<p>{{ event.location }}</p>
+					<p><strong>Start:</strong> {{ event.eventrun_set.all|active|min_attr_value:"date" }}</p>
+    				<p><strong>Price:</strong> {{ event.eventrun_set.all|active|min_attr_value:"price" }}</p>
+				</div>
+			</a>
 			{% endfor %}
-		</table>
-	</div>
-	{% endblock content %}
+		{% else %}
+			<div class="info empty-search">No events found ...</div>
+    	{% endif %}
+    	</div>
+    </div>
+    {% endblock content %}
 </body>
 </html>
