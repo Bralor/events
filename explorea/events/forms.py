@@ -1,5 +1,6 @@
 from django import forms
 from .models import Event, EventRun
+from django.utils import timezone
 
 
 class EventForm(forms.ModelForm):
@@ -18,12 +19,25 @@ class EventRunForm(forms.ModelForm):
 
 
 class EventFilterForm(forms.Form):
-	'''This widget will help us to find our events '''
+	'''This widget will help us to find our events'''
 	DateFrom 	= forms.DateField(label="from", initial=None,
 			widget=forms.SelectDateWidget, required=False)
 	DateTo 		= forms.DateField(label="to", initial=None,
 			widget=forms.SelectDateWidget, required=False)
-	Guests 		= forms.IntegerField(required=False, min_value=1)		
+	Guests 		= forms.IntegerField(required=False, min_value=1)
+
+	def clean(self):
+		super().clean()
+		DateFrom 	= self.cleaned_data.get('DateFrom')
+		DateTo 		= self.cleaned_data.get('DateTo')
+		if ((DateFrom and DateTo) and DateFrom) > DateTo:
+			self.add_error('DateFrom', 'Your selected date is later than date to')
+
+		for name, date in [('DateFrom', DateFrom), ('DateTo', DateTo)]:
+			if date and date < timezone.now().date():
+				self.add_error(name, 'You have selected date in the past')
+
+
 
 
 

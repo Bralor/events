@@ -13,12 +13,22 @@ a {
 a:focus {
     outline: none;
 	}
-/*button {
-    border: solid;
-    border-radius: 15em:
-    padding: 1em 1.5em;
-    font-size: 15em;
-}*/
+button {
+    border: none;
+    border-radius: .3em;
+    padding: 15px;
+    font-size: 20px;
+/*    margin: 0 20px;
+    padding: 15px 40px;
+    font-size: 20px;
+    background-color: #03BA87;
+    color: white;
+    border-radius: .7em;*/
+    }
+button:hover {
+    background-color: #07ffba;
+    color: white;
+    }
 /*###############################################################################*/
 header {
     height: 3rem;
@@ -81,10 +91,10 @@ header {
 	text-align: center;
 	background-color: #03BA87;
 	color: white;
-	border-radius: 1em;
+	border-radius: .3em;
 	}
 .main-banner a:hover {
-    background-color:#a58006;
+    background-color:#07ffba;
     }
 .main-banner a:nth-of-type(1) {
     grid-area: 3 / 2 / 4 / 3;
@@ -167,7 +177,7 @@ header {
 /*###############################################################################*/
 .LowerContainer {
     padding: 0 100px;
-    margin: 3em auto;
+    margin: 10px auto;
     }
 .LowerTable {
     display: grid;
@@ -200,7 +210,7 @@ header {
     background-repeat: no-repeat;
     background-position: center;
     border: solid #03BA87 2px;
-}
+    }
 /*###############################################################################*/
 .FilterBanner {
     background-position: top;
@@ -209,11 +219,54 @@ header {
     height: 730px;
     color: white;
     }
+.FilterBanner h1 {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    font-size: 50px;
+    }
 .EventFilters {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-rows: 50px auto;
+    grid-template-columns: 500px 500px 300px 100px;
+    align-content: top;
     align-items: center;
-    margin: 0 10px;
+    justify-content: center;
+    margin: 30px 0;
+    min-height: 30px;
+    }
+.EventFilters .filter {
+    height: 80px;
+    }
+.EventFilters .FormFilter:nth-of-type(1) {
+    grid-area: 1 / 1 / 2 / 2
+    }
+.EventFilters .FormFilter:nth-of-type(3) {
+    grid-area: 1 / 3 / 2 / 4
+    }
+.EventFilters .FormFilter:nth-of-type(2) {
+    grid-area: 1 / 2 / 2 / 3
+    }
+.EventFilters button {
+    grid-area: 1 / 4 / 2 / 5
+    }
+.errors {
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+    }
+div.errors[for="DateFrom"] {
+    grid-area: 2 / 1 / 3 / 2
+    }
+div.errors[for="DateTo"] {
+    grid-area: 2 / 2 / 3 / 3
+    }
+div.errors[for="Guests"] {
+    grid-area: 2 / 3 / 3 / 4
+    }
+.error {
+    margin-top:5px;
+    color: #d63737;
     }
 .FormFilter {
     margin:5px 15px;
@@ -237,7 +290,7 @@ header {
     border-radius: .7em;
     }
 .FilterButton:hover {
-    background-color: #edc647;
+    background-color: #07ffba;
     }
 select {
     margin:10px 5px;

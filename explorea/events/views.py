@@ -13,7 +13,7 @@ def index(request):
 
 def event_listing(request, category=None):
 	''' Basic offerings of events'''
-	events 		= Event.objects.all().filter_by_category(category)
+	EventRuns	= EventRun.objects.all().filter_by_category(category)
 	FilterForm 	= EventFilterForm(request.GET or None) # Only active events 
 	
 	if request.GET and FilterForm.is_valid():
@@ -21,12 +21,12 @@ def event_listing(request, category=None):
 	else:
 		data = {}
 
-	events 		= events.filter_available(**data)
-	paginator 	= Paginator(events, 4) # Pagination settings
+	EventRuns 	= EventRuns.FirstFilter(**data)
+	paginator 	= Paginator(EventRuns, 4) # Pagination settings
 	page 		= request.GET.get('page')
-	events 		= paginator.get_page(page)
+	EventRuns 	= paginator.get_page(page)
 	
-	attributes 	= {'events': events, 'FilterForm': FilterForm}
+	attributes 	= {'EventRuns': EventRuns, 'FilterForm': FilterForm}
 	return render(request, 'events/event_listing.html', attributes)
 
 
@@ -46,7 +46,7 @@ def create_event(request):
 			event 		= form.save(commit=False)
 			event.host 	= request.user
 			event.save()
-			return redirect('my_events')
+			return redirect('events:my_events')
 
 	form = EventForm()
 	return render(request, 'events/create_event.html', {'form' : form})

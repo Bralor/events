@@ -10,9 +10,8 @@ from django.urls import reverse
 class EventQuerySet(models.QuerySet):
 	'''This is a custom model that inherits all methods from models.Manager'''
 	
-	def filter_by_category(self, category):
+	def filter_by_category(self, category=None):
 		DbEquivalent = ''
-		
 		for shortcut in self.model.CATEGORY_CHOICES:
 			if shortcut[1] == category:
 				DbEquivalent = shortcut[0]
@@ -40,6 +39,7 @@ class EventQuerySet(models.QuerySet):
 
 
 class EventManager(models.Manager):
+
 	def get_queryset(self):
 		return EventQuerySet(self.model, using=self._db)
 
@@ -50,8 +50,50 @@ class EventManager(models.Manager):
 			Q(description__icontains=query) |
 			Q(location__icontains=query)
 				)
-
 		return self.filter(lookup).distinct()
+
+
+class EventRunQuerySet(models.QuerySet):
+
+	def filter_by_category(self, category=None):
+		DbEquivalent = ''
+		for shortcut in Event.CATEGORY_CHOICES:
+			if shortcut[1] == category:
+				DbEquivalent = shortcut[0]
+				break
+		else:
+			return self.all()
+		return self.filter(event__category=DbEquivalent)
+
+
+	def filter_available(self, DateFrom=None, DateTo=None, Guests=None):
+		DateFrom = DateFrom or timezone.now().date()
+		if DateTo:
+			qs = self.filter(date__range=(DateFrom, DateTo))
+		else:
+			qs = self.filter(date__gte=DateFrom)
+
+		if Guests:
+			qs = qs.filter(seats_available__gte=Guests)
+		return qs
+
+
+	def FirstFilter(self, DateFrom=None, DateTo=None, Guests=None):
+		qs = self.filter_available(DateFrom, DateTo, Guests).order_by('date', 'time')
+		EventIds = []
+		Filtered=[]
+
+		for run in qs:
+			if not run.event.id in EventIds:
+				Filtered.append(run)
+				EventIds.append(run.event.id)
+		return Filtered
+
+
+class EventRunManager(models.Manager):
+    
+    def get_queryset(self):
+        return EventRunQuerySet(self.model, using=self._db)
 
 
 class Event(models.Model):
@@ -94,12 +136,12 @@ class Event(models.Model):
 	
 	def get_absolute_url(self):
 		''' url generator'''
-		return reverse('events:detail', args=[self.slug])
+		return reverse('events:event_detail', args=[self.slug])
 
 	
 	class Meta:
 		ordering 		= ['name']
-		unique_together = (("name", "host"))
+		unique_together = (("name", "host"),)
 
 
 class EventRun(models.Model):
@@ -110,7 +152,11 @@ class EventRun(models.Model):
 	seats_available = models.PositiveIntegerField(blank=False, null=False)
 	price			= models.DecimalField(max_digits=10, decimal_places=2, 
 											blank=False, null=False)
+	objects = EventRunManager()
 
 	def __str__(self):
 		return self.event.name
+
+	class Meta:
+		ordering = ['date', 'time']
 
