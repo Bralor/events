@@ -30,9 +30,9 @@ def event_listing(request, category=None):
 	return render(request, 'events/event_listing.html', attributes)
 
 
-def event_detail(request, pk):
+def event_detail(request, slug):
 	'''Here are some details like a date of the event'''
-	event 	= Event.objects.get(pk=pk)
+	event = Event.objects.get(slug=slug)
 	runs 	= event.eventrun_set.all().order_by('date', 'time')
 	return render(request, 'events/event_detail.html', {'event': event, 'runs': runs})
 
@@ -76,9 +76,9 @@ def create_event_run(request, event_id):
 
 
 @login_required
-def update_event(request, pk):
+def update_event(request, slug):
 	''' There is a choice to change an info '''
-	event = Event.objects.get(pk=pk)
+	event = Event.objects.get(slug=slug)
 	if request.method == 'POST':
 		form = EventForm(request.POST, instance=event)
 
@@ -91,9 +91,9 @@ def update_event(request, pk):
 
 
 @login_required
-def delete_event(request, pk):
+def delete_event(request, slug):
 	''' We want to terminate an event '''
-	Event.objects.get(pk=pk).delete()
+	Event.objects.get(slug=slug).delete()
 	return redirect('my_events')
 
 
@@ -138,3 +138,17 @@ def delete_event_run(request, event_run_id):
 
 	url = '/events/detail/{}'.format(event_id)
 	return redirect(url)
+
+
+def event_search(request):
+	'''This view works with searchbar in header'''
+	query 		= request.GET.get('q')
+	events 		= Event.objects.search(query)
+	FilterForm = EventFilterForm()
+	paginator 	= Paginator(events, 16)
+	page 		= request.GET.get('page')
+	events 		= paginator.get_page(page)
+
+	return render(request, 'events/event_listing.html', 
+        {'events': events, 'FilterForm': FilterForm})
+

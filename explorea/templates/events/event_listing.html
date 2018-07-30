@@ -44,7 +44,7 @@
 		{% if events %}
 		<div class="LowerTable">
 			{% for event in events %}
-			<a class="EventTable" href="{% url 'events:event_detail' event.id %}">
+			<a class="EventTable" href="{{ event.get_absolute_url }}">
 				<div class="NotAvailable"></div>
 				<div class="EventDetails">
 					<p>{{ event.host }}</p>
@@ -60,6 +60,8 @@
     	{% endif %}
     	</div>
     </div>
+    {% include 'pagination.html' with page=events %}
     {% endblock content %}
+	
 </body>
 </html>

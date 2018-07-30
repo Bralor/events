@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.db.models import Max, F, Q
+from django.utils.text import slugify
+from django.urls import reverse
 
 
 # first model = class with events
@@ -41,8 +43,19 @@ class EventManager(models.Manager):
 	def get_queryset(self):
 		return EventQuerySet(self.model, using=self._db)
 
+	def search(self, query=None):
+		''' Our searchbar is looking in these three categories'''
+		lookup = (
+			Q(name__icontains=query) |
+			Q(description__icontains=query) |
+			Q(location__icontains=query)
+				)
+
+		return self.filter(lookup).distinct()
+
 
 class Event(models.Model):
+	'''Method for Event DB creation'''
 	FUN 	= 'FN'
 	RELAX 	= 'RX'
 	EXP 	= 'EX'
@@ -58,8 +71,10 @@ class Event(models.Model):
 	host		= models.ForeignKey(settings.AUTH_USER_MODEL,
 									on_delete=models.CASCADE)
 	name 		= models.CharField(max_length=200)
+	slug 		= models.SlugField(max_length=200, unique=True, null=True)
 	description = models.TextField(max_length=1000)
 	location 	= models.CharField(max_length=500)
+	created 	= models.DateTimeField(auto_now_add=True, null=True)
 	category 	= models.CharField(
 						max_length=20,
 						choices = CATEGORY_CHOICES,
@@ -67,11 +82,24 @@ class Event(models.Model):
 									)
 	objects = EventManager()
 
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			self.slug = slugify(self.name + '-with-' + self.host.username)
+		super().save(*args, **kwargs)
+
+	
 	def __str__(self):
 		return self.name
 
+	
+	def get_absolute_url(self):
+		''' url generator'''
+		return reverse('events:detail', args=[self.slug])
+
+	
 	class Meta:
-		ordering = ['name']
+		ordering 		= ['name']
+		unique_together = (("name", "host"))
 
 
 class EventRun(models.Model):

@@ -5,7 +5,7 @@ from .models import Event, EventRun
 class EventForm(forms.ModelForm):
 	class Meta:
 		model = Event
-		exclude = ['host']
+		exclude = ['host', 'slug']
 
 
 class EventRunForm(forms.ModelForm):
