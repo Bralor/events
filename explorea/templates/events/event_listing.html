@@ -45,7 +45,11 @@
 		<div class="LowerTable">
 			{% for EventRun in EventRuns %}
 			<a class="EventTable" href="{{ EventRun.event.get_absolute_url }}">
+				{% if EventRun.event|has:'thumbnail' %}
+					<img src="{{ EventRun.event.thumbnail.url }}">
+				{% else %}
 				<div class="NotAvailable"></div>
+				{% endif %}
 				<div class="EventDetails">
 					<p>{{ EventRun.event.host }}</p>
 					<p>{{ EventRun.event.name }}</p>

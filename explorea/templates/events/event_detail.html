@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load EventTags %}
 <html>
 <head>
 	{% block title %}
@@ -9,16 +10,23 @@
 	{% block content %}
 	<div class="container">
 		<br>
+		<h2>{{ event.name }} | <a href="{% url 'events:update_event' event.slug %}">UPDATE</a></h2>
+		<br>
 		<ul class="list-group">
-			<li class="list-group-item active"><strong>Name of event:</strong>>{{ event.name }}</li>
 			<li class="list-group-item">Username: {{ event.host }}</li>
 			<li class="list-group-item">Location: {{ event.location }}</li>
 			<li class="list-group-item">Category: {{ event.category }}</li>
 			<li class="list-group-item">Description: {{ event.description }}</li>
 		</ul>
 		<br>
-		<a href="/events/update/{{ event.slug }}">Update</a>
-		<hr>
+		<div class="main_image">
+    		{% if event|has:'main_image' %}
+    			<img src="{{ event.main_image.url }}">
+    		{% else %}
+    			<div class="NotAvailable"></div>
+    		{% endif %}
+		</div>
+		<br>
 		<h2>Availability</h2>
 		<table>
 			<tr>

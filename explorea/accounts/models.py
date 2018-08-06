@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 
 
+
 def image_dir(instance, filename):
     return 'user_{}/profile_{}'.format(instance.user.id, filename)
 

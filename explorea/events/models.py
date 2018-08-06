@@ -1,9 +1,23 @@
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
 from django.db.models import Max, F, Q
 from django.utils.text import slugify
-from django.urls import reverse
+# hint: these are not the django.(features) 
+# better to start a whole new block
+from imagekit.processors import ResizeToFill
+from imagekit.models import ProcessedImageField
+
+
+def thumbnail_image_url(instance, filename):
+    '''upload_to for Event thumbnail image'''
+    return 'user_{0}/thumb_{1}'.format(instance.host.id, filename) 
+
+
+def main_image_url(instance, filename):
+    '''upload_to for Event main image'''
+    return 'user_{0}/main_{1}'.format(instance.host.id, filename) 
 
 
 # first model = class with events
@@ -117,6 +131,18 @@ class Event(models.Model):
 	description = models.TextField(max_length=1000)
 	location 	= models.CharField(max_length=500)
 	created 	= models.DateTimeField(auto_now_add=True, null=True)
+	thumbnail = ProcessedImageField(
+		upload_to=thumbnail_image_url,
+		processors=[ResizeToFill(300,200)],
+		format='PNG',
+		options={'quality':60},
+		null=True)
+	main_image = ProcessedImageField(
+		upload_to=main_image_url,
+		processors=[ResizeToFill(500,600)],
+		format='PNG',
+		options={'quality':100},
+		null=True)
 	category 	= models.CharField(
 						max_length=20,
 						choices = CATEGORY_CHOICES,

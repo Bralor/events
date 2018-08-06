@@ -79,15 +79,15 @@ def create_event_run(request, event_id):
 def update_event(request, slug):
 	''' There is a choice to change an info '''
 	event = Event.objects.get(slug=slug)
+	event_form = EventForm(request.POST or None, request.FILES or None, instance=event)
+
 	if request.method == 'POST':
-		form = EventForm(request.POST, instance=event)
+		if event_form.is_valid():
+			event = event_form.save()
+			return redirect(event.get_absolute_url())
 
-		if form.is_valid():
-			event = form.save()
-			return redirect('events:my_events')
-
-	form = EventForm(instance=event)
-	return render(request, 'events/create_event.html', {'form': form})
+	return render(request, 'events/create_event.html',
+		{'event_form': event_form, 'event': event})
 
 
 @login_required

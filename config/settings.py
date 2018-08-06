@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'explorea.events',
     'explorea.accounts',
+    'imagekit',
 ]
 
 # all of there are trying to refer to builtin middlware classes
