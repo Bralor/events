@@ -7,21 +7,32 @@
 </head>
 <body>
 	{% block content %}
-	<div class="container">
+	<div>
 		<h2>Edit profile</h2>
-		<table>
-			<form method="post">
-				{% csrf_token %}
-					<tr><td>{{ form.username.label }}: {{ form.username }}</td></tr>
-					<tr><td>{{ form.email.label }}: {{ form.email }}</td></tr>
-					<tr><td>{{ form.first_name.label }}: {{ form.first_name }}</td></tr>
-					<tr><td>{{ form.last_name.label }}: {{ form.last_name }}</td></tr> 
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+    			{% for field in UserForm.visible_fields %}
+        			{% for error in field.errors %}
+        			{{ error }}
+        			{% endfor %}
+
+			        {% if field.label != 'Password' %}
+			        <p>{{ field.label_tag}}{{ field }}</p>
+			        {% endif %}
+        
+
+    			{% endfor %}
+
+			    {% for field in ProfileForm.visible_fields %}
+			        {% for error in field.errors %}
+			        {{ error }}
+			        {% endfor %}
+			        <p>{{ field.label_tag}}{{ field }}</p>
+
+			    {% endfor %}
+			    <button type="submit">Save</button>
 			</form>
-		</table>
-		<br>
-		<input type='Submit' value='Save' class="btn btn-outline-danger" role="button" aria-pressed="true">
-	<!-- 	<button type="submit" class="btn btn-outline-danger">Save</button> -->
-	</div>
-	{% endblock content %}
+		</div>
+{% endblock content %}
 </body>
 </html>

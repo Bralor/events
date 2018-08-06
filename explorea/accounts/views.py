@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import RegisterForm, EditProfileForm
+from .forms import RegisterForm, EditProfileForm, EditUserForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 
@@ -34,18 +34,21 @@ def register(request):
 
 @login_required
 def edit_profile(request):
-	''' If we want to change some of our information in the profile'''
+	
+    UserForm = EditUserForm(request.POST or None, instance=request.user)
+    ProfileForm = EditProfileForm(request.POST or None, request.FILES or None,
+        instance=request.user.profile)
 
-	if request.method == 'POST':
-		form = EditProfileForm(request.POST, instance=request.user)
+    if request.method == 'POST':
 
-		if form.is_valid():
-			user = form.save()
-			request.session['profile_changes'] = request.session.setdefault('profile_changes', 0) + 1
-			return redirect('profile')
+        if UserForm.is_valid() and ProfileForm.is_valid():
+            user = UserForm.save()
+            profile = ProfileForm.save()
+            
+            return redirect('accounts:profile')
 
-	form = EditProfileForm(instance=request.user)
-	return render(request, 'accounts/edit_profile.html', {'form': form})
+    return render(request, 'accounts/edit_profile.html', 
+        {'UserForm': UserForm, 'ProfileForm': ProfileForm})
 
 
 @login_required

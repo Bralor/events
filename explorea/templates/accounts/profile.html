@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load account_tags %}
 <html>
 <head>
 	{% block head %}
@@ -7,15 +9,26 @@
 </head>
 <body>
 	{% block content %}
-	<div class="container">
-		<br>
-		<h2> My profile </h2>
-		<table>
-			<tr><td>Username: {{ user }}</td></tr>
-			<tr><td>First name: {{ user.first_name}}</td></tr>
-			<tr><td>Last name: {{ user.last_name}}</td></tr>
-			<tr><td>Email: {{ user.email }}</td></tr>
-	</div>
+	<br>
+	<table>
+    	<tr>
+       		<td>
+        	{% if  user.profile.avatar|has:'url' %}
+            	<img src="{{ user.profile.avatar.url }}">
+       		{% else %}
+            	<img src="{% static 'img/avatar.png' %}">
+        	{% endif %}
+        	</td>
+        </tr>
+    </table>
+	<h2> My profile </h2>
+	<br>
+	<p>Username: {{ user }}</p>
+	<p>First name: {{ user.first_name}}</p>
+	<p>Last name: {{ user.last_name}}</p>
+	<p>Email: {{ user.email }}</p>
+	<br>
+	<button type="submit" href="{% url 'accounts:edit_profile' %}">Edit profile</button>
 	{% endblock content %}
 </body>
 </html>

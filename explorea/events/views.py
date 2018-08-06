@@ -22,7 +22,7 @@ def event_listing(request, category=None):
 		data = {}
 
 	EventRuns 	= EventRuns.FirstFilter(**data)
-	paginator 	= Paginator(EventRuns, 4) # Pagination settings
+	paginator 	= Paginator(EventRuns, 8) # Pagination settings
 	page 		= request.GET.get('page')
 	EventRuns 	= paginator.get_page(page)
 	
@@ -32,7 +32,7 @@ def event_listing(request, category=None):
 
 def event_detail(request, slug):
 	'''Here are some details like a date of the event'''
-	event = Event.objects.get(slug=slug)
+	event 	= Event.objects.get(slug=slug)
 	runs 	= event.eventrun_set.all().order_by('date', 'time')
 	return render(request, 'events/event_detail.html', {'event': event, 'runs': runs})
 
@@ -84,7 +84,7 @@ def update_event(request, slug):
 
 		if form.is_valid():
 			event = form.save()
-			return redirect('my_events')
+			return redirect('events:my_events')
 
 	form = EventForm(instance=event)
 	return render(request, 'events/create_event.html', {'form': form})
@@ -144,11 +144,10 @@ def event_search(request):
 	'''This view works with searchbar in header'''
 	query 		= request.GET.get('q')
 	events 		= Event.objects.search(query)
-	FilterForm = EventFilterForm()
+	FilterForm 	= EventFilterForm()
 	paginator 	= Paginator(events, 16)
 	page 		= request.GET.get('page')
 	events 		= paginator.get_page(page)
 
 	return render(request, 'events/event_listing.html', 
-        {'events': events, 'FilterForm': FilterForm})
-
+		{'events': events, 'FilterForm': FilterForm})

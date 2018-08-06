@@ -30,12 +30,14 @@ class EventFilterForm(forms.Form):
 		super().clean()
 		DateFrom 	= self.cleaned_data.get('DateFrom')
 		DateTo 		= self.cleaned_data.get('DateTo')
-		if ((DateFrom and DateTo) and DateFrom) > DateTo:
+		if ((DateFrom and DateTo) and DateFrom > DateTo):
 			self.add_error('DateFrom', 'Your selected date is later than date to')
 
 		for name, date in [('DateFrom', DateFrom), ('DateTo', DateTo)]:
 			if date and date < timezone.now().date():
 				self.add_error(name, 'You have selected date in the past')
+
+
 
 
 

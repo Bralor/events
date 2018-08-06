@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'explorea.events',
-    'explorea.accounts'
+    'explorea.accounts',
 ]
 
 # all of there are trying to refer to builtin middlware classes
@@ -104,6 +104,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(APPS_DIR, 'static')
                     ]
+# saving the pictures into user_profile
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(APPS_DIR, 'media')
 
 # "dumb" smtp server that receives email locally
 EMAIL_HOST = 'localhost'

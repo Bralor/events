@@ -42,10 +42,10 @@
 			</tr>
 			{% for event in events %}
 			<tr>
-				<td><a class="btn btn-outline-primary" data-toggle="collapse" href="/events/detail/{{ event.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">{{ event.name }}</a></td>
+				<td><a href="/events/detail/{{ event.slug }}">{{ event.name }}</a></td>
 				<td>{{ event.location }}</td>
-				<td><a href="/events/update/{{ event.id }}" class="btn btn-outline-primary" role="button" aria-pressed="true">Update</a></td>
-				<td><a href="/events/delete/{{ event.id }}" class="btn btn-outline-danger" role="button" aria-pressed="true">Delete</a></td>
+				<td><a href="/events/update/{{ event.slug }}">Update</a></td>
+				<td><a href="/events/delete/{{ event.id }}">Delete</a></td>
 			</tr>
 			{% endfor %}
 		</table>

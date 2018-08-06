@@ -124,24 +124,21 @@ class Event(models.Model):
 									)
 	objects = EventManager()
 
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		ordering 		= ['name']
+		unique_together = (("name", "host"))
+
 	def save(self, *args, **kwargs):
 		if not self.slug:
 			self.slug = slugify(self.name + '-with-' + self.host.username)
 		super().save(*args, **kwargs)
 
-	
-	def __str__(self):
-		return self.name
-
-	
 	def get_absolute_url(self):
 		''' url generator'''
 		return reverse('events:event_detail', args=[self.slug])
-
-	
-	class Meta:
-		ordering 		= ['name']
-		unique_together = (("name", "host"),)
 
 
 class EventRun(models.Model):
