@@ -1,6 +1,7 @@
 from django import forms
-from .models import Event, EventRun
 from django.utils import timezone
+from .models import Event, EventRun
+
 
 
 class EventForm(forms.ModelForm):
@@ -36,6 +37,11 @@ class EventFilterForm(forms.Form):
 		for name, date in [('DateFrom', DateFrom), ('DateTo', DateTo)]:
 			if date and date < timezone.now().date():
 				self.add_error(name, 'You have selected date in the past')
+
+
+class MultipleFileForm(forms.Form):
+	'''We can upload multiple files at the same time'''
+	gallery = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
 
 

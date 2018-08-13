@@ -17,7 +17,13 @@ def thumbnail_image_url(instance, filename):
 
 def main_image_url(instance, filename):
     '''upload_to for Event main image'''
-    return 'user_{0}/main_{1}'.format(instance.host.id, filename) 
+    return 'user_{0}/main_{1}'.format(instance.host.id, filename)
+
+
+def album_image_url(instance, filename):
+	'''upload_to for Image model'''
+	return 'user_{0}/{1}/{2}'.format(instance.album.event.host.id,
+		instance.album.title, filename)
 
 
 # first model = class with events
@@ -143,11 +149,11 @@ class Event(models.Model):
 		format='PNG',
 		options={'quality':100},
 		null=True)
-	category 	= models.CharField(
-						max_length=20,
-						choices = CATEGORY_CHOICES,
-						default = FUN,
-									)
+	category = models.CharField(
+		max_length=20,
+		choices = CATEGORY_CHOICES,
+		default = FUN,
+								)
 	objects = EventManager()
 
 	def __str__(self):
@@ -155,12 +161,15 @@ class Event(models.Model):
 
 	class Meta:
 		ordering 		= ['name']
-		unique_together = (("name", "host"))
+		unique_together = (("name", "host"),)
 
 	def save(self, *args, **kwargs):
 		if not self.slug:
 			self.slug = slugify(self.name + '-with-' + self.host.username)
 		super().save(*args, **kwargs)
+
+		if not hasattr(self, 'album'):
+			Album.objects.create(event=self)
 
 	def get_absolute_url(self):
 		''' url generator'''
@@ -182,4 +191,37 @@ class EventRun(models.Model):
 
 	class Meta:
 		ordering = ['date', 'time']
+
+
+
+class Album(models.Model):
+	'''aaaa'''
+	event 	= models.OneToOneField(Event, on_delete=models.CASCADE)
+	title 	= models.CharField(max_length=200, null=True)
+	created = models.DateTimeField(auto_now_add=True)
+
+	def save(self, *args, **kwargs):
+		if not self.title:
+			self.title = "album_" + self.event.name
+		super().save(*args, **kwargs)
+
+	def __str__(self):
+		return '{}'.format(self.title)
+
+
+class Image(models.Model):
+	'''aaa'''
+	album 	= models.ForeignKey(Album, on_delete=models.CASCADE)
+	image 	= ProcessedImageField(upload_to=album_image_url,
+		processors=[ResizeToFill(500,400)],
+		format='PNG',
+		options={'quality':80})
+	title 	= models.CharField(max_length=200, null=True)
+	created = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return '{}/{}'.format(self.album, self.title)
+
+	class Meta:
+		ordering = ['created']
 

@@ -1,9 +1,12 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from .models import Event, EventRun
-from .forms import EventForm, EventRunForm, EventFilterForm
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
+from .models import Event, EventRun, Album, Image
+
+from .forms import EventForm, EventRunForm, EventFilterForm, MultipleFileForm
+
 
 
 def index(request):
@@ -40,16 +43,40 @@ def event_detail(request, slug):
 @login_required
 def create_event(request):
 	''' There is choice for the user to make his own event '''
-	if request.method == 'POST':
-		form = EventForm(request.POST)
-		if form.is_valid():
-			event 		= form.save(commit=False)
-			event.host 	= request.user
-			event.save()
-			return redirect('events:my_events')
+	EvntForm = EventForm(request.POST or None, request.FILES or None)
+	FileForm = MultipleFileForm(files=request.FILES or None)
 
-	form = EventForm()
-	return render(request, 'events/create_event.html', {'form' : form})
+	if request.method == 'POST':
+		if EvntForm.is_valid() and FileForm.is_valid():
+			event = EvntForm.save(commit=False)
+			event.host = request.user
+			event.save()
+			# create an album
+			# album = Album.objects.create(event=event)
+			# save the individual images
+			for file in request.FILES.getlist('gallery'):
+				Image.objects.create(album=event.album, image=file, title=file.name)
+
+			return redirect(event.get_absolute_url())
+	return render(request, 'events/create_event.html', 
+         {'EvntForm': EvntForm, 'FileForm': FileForm})
+
+@login_required
+def update_event(request, slug):
+	'''New view of our update.html. It relates with create_event.view'''
+	event = Event.objects.get(slug=slug)
+	EvntForm = EventForm(request.POST or None, request.FILES or None, instance=event)
+	FileForm = MultipleFileForm(files=request.FILES or None)
+
+	if request.method == 'POST':
+		if EvntForm.is_valid() and FileForm.is_valid():
+			event = EvntForm.save()
+			for file in request.FILES.getlist('gallery'):
+				Image.objects.create(album=event.album, image=file, title=file.name)
+
+			return redirect(event.get_absolute_url())
+	return render(request, 'events/create_event.html', 
+		{'EvntForm': EvntForm, 'FileForm': FileForm, 'event': event})
 
 
 @login_required
@@ -73,21 +100,6 @@ def create_event_run(request, event_id):
 			url = 'events/detail/{}'.format(event_id)
 			return redirect(url)
 	return render(request, 'events/create_event_run.html', {'form': EventRunForm()})
-
-
-@login_required
-def update_event(request, slug):
-	''' There is a choice to change an info '''
-	event = Event.objects.get(slug=slug)
-	event_form = EventForm(request.POST or None, request.FILES or None, instance=event)
-
-	if request.method == 'POST':
-		if event_form.is_valid():
-			event = event_form.save()
-			return redirect(event.get_absolute_url())
-
-	return render(request, 'events/create_event.html',
-		{'event_form': event_form, 'event': event})
 
 
 @login_required

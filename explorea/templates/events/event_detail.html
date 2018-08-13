@@ -26,6 +26,15 @@
     			<div class="NotAvailable"></div>
     		{% endif %}
 		</div>
+		<p>{{ event.description }}</p>
+		<br>
+		<!--Image slideshow-->
+		<div class="owl-carousel">
+		{% for image in event.album.image_set.all %}
+		<img src="{{ image.image.url }}" alt="{{ image.title }}">
+		{% endfor %}
+		</div>
+
 		<br>
 		<h2>Availability</h2>
 		<table>
