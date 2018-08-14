@@ -2,11 +2,13 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Event, EventRun, Album, Image
 
 from .forms import EventForm, EventRunForm, EventFilterForm, MultipleFileForm
 
+from django.views.generic import ListView, DetailView
 
 def index(request):
     ''' Main page, kind of welcome page with usefull text'''
@@ -38,6 +40,16 @@ def event_detail(request, slug):
 	runs 	= event.eventrun_set.all().order_by('date', 'time')
 	return render(request, 'events/event_detail.html', {'event': event, 'runs': runs})
 
+class EventDetailView(DetailView):
+	model 				= Event
+	template_name 		= 'events/event_detail.html'
+	context_object_name = 'event'
+
+	def get_context_data(self, **kwargs):
+		'''Insert the single object into the context dictionary.'''
+		context = super().get_context_data(**kwargs)
+		context['runs'] = self.object.active_runs()
+		return context
 
 @login_required
 def create_event(request):
@@ -78,11 +90,14 @@ def update_event(request, slug):
 		{'EvntForm': EvntForm, 'FileForm': FileForm, 'event': event})
 
 
-@login_required
-def my_events(request):
-	'''I'm little bit confused about the purpose of this page'''
-	events = Event.objects.filter(host_id=request.user.id)
-	return render(request, 'events/my_events.html', {'events': events})
+class MyEventsView(LoginRequiredMixin, ListView):
+	# attributes 
+	context_object_name = 'events'
+	template_name 		= 'events/my_events.html'
+
+	def get_queryset(self):
+		''' This method gets the data from database.'''
+		return Event.objects.filter(host_id=self.request.user.id)
 
 
 @login_required

@@ -1,12 +1,12 @@
-from django.urls import path
 from . import views
+from django.urls import path
 
 app_name = 'events'
 
 urlpatterns = [
     path('', views.event_listing, name='events'),
     path('new/', views.create_event, name='create_event'),
-    path('my_events/', views.my_events, name='my_events'),
+    path('my_events/', views.MyEventsView.as_view(), name='my_events'),
     path('search/', views.event_search, name='search'),
     
     path('detail/<slug:slug>/', views.event_detail, name='event_detail'),
