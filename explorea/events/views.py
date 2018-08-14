@@ -8,7 +8,6 @@ from .models import Event, EventRun, Album, Image
 from .forms import EventForm, EventRunForm, EventFilterForm, MultipleFileForm
 
 
-
 def index(request):
     ''' Main page, kind of welcome page with usefull text'''
     return render(request, 'events/index.html')

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+<head>
+	{% block title %}
+	<title>Link invalid</title>
+	{% endblock title %}
+</head>
+<body>
+	{% block content %}
+	<p>Congratulations, you can now create events. We wish you luck!</p>
+	<p>
+		<a href="{% url 'events:create_event' %}"><strong>Create your first event</strong></a>
+	</p>
+	{% endblock content %}
+</body>

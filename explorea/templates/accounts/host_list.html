@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load account_tags %}
+{% load static %}
+<head>
+	{% block title %}
+	<title>Email sent</title>
+	{% endblock title %}
+</head>
+<body>
+	{% block content %}
+	<a href="{% url 'accounts:become_host' %}">Become a host</a>
+
+	{% for profile in profiles %}
+	<div>
+	    <a href="{{ profile.get_absolute_url }}">
+	         {% if  user.profile.avatar|has:'url' %}
+	            <img src="{{ user.profile.avatar.url }}" alt='{{ profile.user.username }}'>
+	        {% else %}
+	            <img src="{% static 'img/avatar.png' %}" alt='Not Available'>
+	        {% endif %}
+	        <p>{{ profile.user.username }}</p>
+	    </a>
+	</div>
+	{% endfor %}
+	{% endblock content %}
+</body>	
