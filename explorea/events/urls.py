@@ -9,9 +9,9 @@ urlpatterns = [
     path('my_events/', views.MyEventsView.as_view(), name='my_events'),
     path('search/', views.event_search, name='search'),
     
-    path('detail/<slug:slug>/', views.event_detail, name='event_detail'),
+    path('detail/<slug:slug>/', views.EventDetailView.as_view(), name='event_detail'),
     path('update/<slug:slug>/', views.update_event, name='update_event'),
-    path('delete/<slug:slug>/', views.delete_event, name='delete_event'),
+    path('delete/<slug:slug>/', views.DeleteEventView.as_view(), name='delete_event'),
     
     path('<int:event_id>/new_run/', views.create_event_run, name='create_event_run'),
     path('update_run/<int:event_run_id>/', views.update_event_run,name='update_event_run'),

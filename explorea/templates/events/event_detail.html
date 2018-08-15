@@ -10,7 +10,10 @@
 	{% block content %}
 	<div class="container">
 		<br>
-		<h2>{{ event.name }} | <a href="{% url 'events:update_event' event.slug %}">UPDATE</a></h2>
+		<h2>{{ event.name }} 
+		    | <a href="{% url 'events:update_event' event.slug %}">UPDATE</a> 
+		    | <a href="{% url 'events:delete_event' event.slug %}">DELETE</a>
+		</h2>
 		<br>
 		<ul class="list-group">
 			<li class="list-group-item">Username: {{ event.host }}</li>
@@ -29,12 +32,11 @@
 		<p>{{ event.description }}</p>
 		<br>
 		<!--Image slideshow-->
-		<div class="owl-carousel">
+		<div class="OwlCarousel">
 		{% for image in event.album.image_set.all %}
 		<img src="{{ image.image.url }}" alt="{{ image.title }}">
 		{% endfor %}
 		</div>
-
 		<br>
 		<h2>Availability</h2>
 		<table>

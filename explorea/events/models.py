@@ -171,6 +171,10 @@ class Event(models.Model):
 		if not hasattr(self, 'album'):
 			Album.objects.create(event=self)
 
+	def ActiveRuns(self):
+		today = timezone.now().date()
+		return self.eventrun_set.filter(date__gte=today)
+
 	def get_absolute_url(self):
 		''' url generator'''
 		return reverse('events:event_detail', args=[self.slug])

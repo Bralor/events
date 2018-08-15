@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
@@ -9,6 +10,8 @@ from .models import Event, EventRun, Album, Image
 from .forms import EventForm, EventRunForm, EventFilterForm, MultipleFileForm
 
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import DeleteView, CreateView
+
 
 def index(request):
     ''' Main page, kind of welcome page with usefull text'''
@@ -34,12 +37,6 @@ def event_listing(request, category=None):
 	return render(request, 'events/event_listing.html', attributes)
 
 
-def event_detail(request, slug):
-	'''Here are some details like a date of the event'''
-	event 	= Event.objects.get(slug=slug)
-	runs 	= event.eventrun_set.all().order_by('date', 'time')
-	return render(request, 'events/event_detail.html', {'event': event, 'runs': runs})
-
 class EventDetailView(DetailView):
 	model 				= Event
 	template_name 		= 'events/event_detail.html'
@@ -48,29 +45,27 @@ class EventDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		'''Insert the single object into the context dictionary.'''
 		context = super().get_context_data(**kwargs)
-		context['runs'] = self.object.active_runs()
+		context['runs'] = self.object.ActiveRuns()
 		return context
+
 
 @login_required
 def create_event(request):
 	''' There is choice for the user to make his own event '''
-	EvntForm = EventForm(request.POST or None, request.FILES or None)
-	FileForm = MultipleFileForm(files=request.FILES or None)
+	Form = EventForm(request.POST or None, request.FILES or None)
 
 	if request.method == 'POST':
-		if EvntForm.is_valid() and FileForm.is_valid():
-			event = EvntForm.save(commit=False)
-			event.host = request.user
-			event.save()
-			# create an album
-			# album = Album.objects.create(event=event)
+		if Form.is_valid():
+			Form.cleaned_data.pop('gallery')
+			event = Event.objects.create(host=request.user, **form.cleaned_data)
+
 			# save the individual images
 			for file in request.FILES.getlist('gallery'):
 				Image.objects.create(album=event.album, image=file, title=file.name)
 
 			return redirect(event.get_absolute_url())
-	return render(request, 'events/create_event.html', 
-         {'EvntForm': EvntForm, 'FileForm': FileForm})
+	return render(request, 'events/create_event.html', {'Form': Form})
+
 
 @login_required
 def update_event(request, slug):
@@ -91,7 +86,7 @@ def update_event(request, slug):
 
 
 class MyEventsView(LoginRequiredMixin, ListView):
-	# attributes 
+	# attributes
 	context_object_name = 'events'
 	template_name 		= 'events/my_events.html'
 
@@ -121,6 +116,11 @@ def delete_event(request, slug):
 	''' We want to terminate an event '''
 	Event.objects.get(slug=slug).delete()
 	return redirect('my_events')
+
+
+class DeleteEventView(LoginRequiredMixin, DeleteView):
+	model 		= Event
+	success_url = reverse_lazy('events:my_events')
 
 
 @login_required

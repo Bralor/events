@@ -319,7 +319,7 @@ select {
     background-color: #c9c9c9;
     }
 /*###############################################################################*/
-.owl-carousel {
+.OwlCarousel {
     height: 400px;
     width: 500px;
     position: relative;
@@ -365,5 +365,5 @@ footer section a {
 	}
 footer section a:hover {
     color:#000;
-}
+    }
 /*###############################################################################*/

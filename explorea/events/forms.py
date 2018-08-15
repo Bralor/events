@@ -3,11 +3,13 @@ from django.utils import timezone
 from .models import Event, EventRun
 
 
-
 class EventForm(forms.ModelForm):
-	class Meta:
-		model = Event
-		exclude = ['host', 'slug']
+    gallery = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), 
+    	required=False)
+    
+    class Meta:
+        model = Event
+        exclude = ['host', 'slug']
 
 
 class EventRunForm(forms.ModelForm):
