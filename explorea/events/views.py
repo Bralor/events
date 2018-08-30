@@ -49,22 +49,20 @@ class EventDetailView(DetailView):
 		return context
 
 
-@login_required
-def create_event(request):
-	''' There is choice for the user to make his own event '''
-	Form = EventForm(request.POST or None, request.FILES or None)
+class CreateEventView(LoginRequiredMixin, CreateView):
+	model 			= Event
+	form_class 		= EventForm
+	template_name 	= 'events/create_event.html'
 
-	if request.method == 'POST':
-		if Form.is_valid():
-			Form.cleaned_data.pop('gallery')
-			event = Event.objects.create(host=request.user, **form.cleaned_data)
+	def form_valid(self, form):
+		form.cleaned_data.pop('gallery')
+		event = Event.objects.create(host=self.request.user, **form.cleaned_data)
 
-			# save the individual images
-			for file in request.FILES.getlist('gallery'):
-				Image.objects.create(album=event.album, image=file, title=file.name)
+		# save the individual images
+		for file in self.request.FILES.getlist('gallery'):
+			Image.objects.create(album=event.album, image=file, title=file.name)
 
-			return redirect(event.get_absolute_url())
-	return render(request, 'events/create_event.html', {'Form': Form})
+		return redirect(event.get_absolute_url())
 
 
 @login_required
