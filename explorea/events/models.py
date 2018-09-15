@@ -111,9 +111,18 @@ class EventRunQuerySet(models.QuerySet):
 
 
 class EventRunManager(models.Manager):
-    
-    def get_queryset(self):
-        return EventRunQuerySet(self.model, using=self._db)
+	'''class based view instead of event_listing view'''
+
+	def get_queryset(self):
+		return EventRunQuerySet(self.model, using=self._db)
+
+	def search(self, query=None):
+		lookup = (
+			Q(event__name__icontains=query) |
+			Q(event__description__icontains=query) |
+			Q(event__location__icontains=query)
+				)
+		return self.filter(lookup).distinct()
 
 
 class Event(models.Model):

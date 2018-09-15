@@ -8,7 +8,7 @@
         {% endif %}
 
         <span class="PaginationNumPages">
-        {% for page_num in page.paginator.page_range %}
+        {% for page_num in paginator.page_range %}
             {% if page_num == page.number %}
                 <a class="ActivePagination" href="#">{{ page_num }}</a>
             {% else %}

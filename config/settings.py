@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'explorea.events',
     'explorea.accounts',
     'imagekit',
+    'explorea.cart',
 ]
 
 # all of there are trying to refer to builtin middlware classes

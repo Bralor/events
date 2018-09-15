@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.core.paginator import Paginator
@@ -7,10 +8,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Event, EventRun, Album, Image
 
-from .forms import EventForm, EventRunForm, EventFilterForm, MultipleFileForm
-
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import DeleteView, CreateView
+from django.views.generic.edit import FormView, FormMixin
+from django.views.generic.edit import DeleteView, CreateView, UpdateView
+
+from .forms import EventForm, EventRunForm, EventFilterForm, EventSearchFilterForm
 
 
 def index(request):
@@ -18,23 +20,39 @@ def index(request):
     return render(request, 'events/index.html')
 
 
-def event_listing(request, category=None):
-	''' Basic offerings of events'''
-	EventRuns	= EventRun.objects.all().filter_by_category(category)
-	FilterForm 	= EventFilterForm(request.GET or None) # Only active events 
-	
-	if request.GET and FilterForm.is_valid():
-		data = FilterForm.cleaned_data
-	else:
-		data = {}
+class GetFormMixin(FormMixin):
 
-	EventRuns 	= EventRuns.FirstFilter(**data)
-	paginator 	= Paginator(EventRuns, 8) # Pagination settings
-	page 		= request.GET.get('page')
-	EventRuns 	= paginator.get_page(page)
-	
-	attributes 	= {'EventRuns': EventRuns, 'FilterForm': FilterForm}
-	return render(request, 'events/event_listing.html', attributes)
+	def get_form_kwargs(self):
+		kwargs = {
+			'initial': self.get_initial(),
+			'prefix': self.get_prefix(),
+			'data': self.request.GET,
+			}
+		return kwargs
+		
+
+class EventListView(GetFormMixin, ListView):
+    model 				= EventRun
+    context_object_name = 'EventRuns'
+    form_class 			= EventFilterForm
+    template_name 		= 'events/event_listing.html'
+    paginate_by 		= 4
+
+    def get(self, request, *args, **kwargs):
+    	self.form = self.get_form()
+    	if self.form.is_valid():
+    		return super().get(request, *args, **kwargs)
+    	self.object_list = []
+    	return self.form_invalid(self.form)
+
+    def get_queryset(self):
+        qs = self.model._default_manager.all().filter_by_category(self.kwargs['category'])
+        return qs.FirstFilter(**self.form.cleaned_data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['FilterForm'] = self.form
+        return context
 
 
 class EventDetailView(DetailView):
@@ -83,6 +101,21 @@ def update_event(request, slug):
 		{'EvntForm': EvntForm, 'FileForm': FileForm, 'event': event})
 
 
+class UpdateEventView(LoginRequiredMixin, UpdateView):
+	model 			= Event
+	form_class 		= EventForm
+	template_name 	= 'events/create_event.html'
+
+	def form_valid(self, form):
+		event = form.save()
+
+		# save the individual images
+		for file in self.request.FILES.getlist('gallery'):
+			Image.objects.create(album=event.album, image=file, title=file.name)
+
+		return redirect(event.get_absolute_url())
+
+
 class MyEventsView(LoginRequiredMixin, ListView):
 	# attributes
 	context_object_name = 'events'
@@ -121,6 +154,22 @@ class DeleteEventView(LoginRequiredMixin, DeleteView):
 	success_url = reverse_lazy('events:my_events')
 
 
+# @login_required
+# def create_event_run(request, event_id):
+# 	if request.method == 'POST':
+# 		form = EventRunForm(request.POST)
+
+# 		if form.is_valid():
+# 			event_run = form.save(commit=False)
+# 			event_run.event = Event.objects.get(pk=event_id)
+# 			event_run.save()
+
+# 			url = '/events/detail/{}'.format(event_id)
+# 			return redirect(url)
+
+# 	args = {'form': EventRunForm()}
+# 	return render(request, 'events/create_event_run.html', args)
+
 @login_required
 def create_event_run(request, event_id):
 	if request.method == 'POST':
@@ -130,9 +179,11 @@ def create_event_run(request, event_id):
 			event_run = form.save(commit=False)
 			event_run.event = Event.objects.get(pk=event_id)
 			event_run.save()
-
-			url = '/events/detail/{}'.format(event_id)
-			return redirect(url)
+			messages.success(request, 'The run has been created successfully')
+			return redirect(event_run.event.get_absolute_url())
+		
+		else:
+			messages.error(request, 'The run could not be created')
 
 	args = {'form': EventRunForm()}
 	return render(request, 'events/create_event_run.html', args)
@@ -164,14 +215,29 @@ def delete_event_run(request, event_run_id):
 	return redirect(url)
 
 
-def event_search(request):
-	'''This view works with searchbar in header'''
-	query 		= request.GET.get('q')
-	events 		= Event.objects.search(query)
-	FilterForm 	= EventFilterForm()
-	paginator 	= Paginator(events, 16)
-	page 		= request.GET.get('page')
-	events 		= paginator.get_page(page)
+class EventSearchView(ListView):
+	'''This class-based view works with searchbar in header'''
+	model 				= EventRun
+	form_class 			= EventSearchFilterForm
+	template_name 		= 'events/event_listing.html'
+	paginate_by 		= 4
+	context_object_name = 'EventRuns'
+	#extra_context 		= {'FilterForm': EventFilterForm()}
 
-	return render(request, 'events/event_listing.html', 
-		{'events': events, 'FilterForm': FilterForm})
+	def get(self, request, *args, **kwargs):
+		self.form = self.get_form()
+		if self.form.is_valid():
+			self.query = self.form.cleaned_data.pop('q')
+			return super().get(request, *args, **kwargs)
+
+		self.object_list = []
+		return self.form_invalid(self.form)
+
+	def get_queryset(self):
+		qs =  self.model._default_manager.search(self.query)
+		return qs.FirstFilter(**self.form.cleaned_data)
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['FilterForm'] = self.form
+		return context

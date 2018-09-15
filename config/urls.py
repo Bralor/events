@@ -9,6 +9,7 @@ urlpatterns = 	[
 	path('events/', include('explorea.events.urls', namespace='events')),
     path('accounts/', include('explorea.accounts.urls', namespace='accounts')),
     path('admin/', admin.site.urls),
+    path('cart/', include('explorea.cart.urls', namespace='cart')),
 				]
 
 if settings.DEBUG:

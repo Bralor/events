@@ -41,16 +41,9 @@ class EventFilterForm(forms.Form):
 				self.add_error(name, 'You have selected date in the past')
 
 
-class MultipleFileForm(forms.Form):
-	'''We can upload multiple files at the same time'''
-	gallery = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-
-
-
-
-
-
-
-
+class EventSearchFilterForm(EventFilterForm):
+    
+     q = forms.CharField(required=False, max_length=1000, initial='',
+                                    widget=forms.HiddenInput())
 
 
