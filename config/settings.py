@@ -124,3 +124,6 @@ LOGIN_EXEMPT_URLS = (
     r'^accounts/logout/$',
     r'^accounts/register/$',
     )
+
+# It works with 'cart.py' in app 'cart' 
+CART_SESSION_ID = 'cart'
