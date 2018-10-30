@@ -192,7 +192,8 @@ header {
     min-width: 200px;
     }
 .EventDetails {
-    padding: 1em; 
+    padding: 1em;
+    background: #eee;
     }
 .EventDetails p:nth-of-type(1) {
     font-style: italic;
